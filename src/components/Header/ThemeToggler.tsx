@@ -1,4 +1,3 @@
-"use client"
 import { BsFillMoonFill, BsFillSunFill } from 'react-icons/bs'
 import { useTheme } from 'next-themes'
 

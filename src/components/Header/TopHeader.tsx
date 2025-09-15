@@ -1,7 +1,9 @@
+"use client"
 import React from 'react'
 import Button from '../Button/Button'
 import { BsFacebook, BsYoutube, BsTwitterX, BsInstagram } from "react-icons/bs";
 import ThemeToggler from './ThemeToggler';
+import WeatherIndicator from '../WeatherIndicator/WeatherIndicator';
 
 export default function TopHeader() {
     return (
@@ -9,7 +11,7 @@ export default function TopHeader() {
             <div className='flex items-center gap-2'>
                 <Button label="Live TV" />
                 <Button label="Channel No" />
-                <p className='text-sm'>Bhubaneswar 26.1° C</p>
+                <WeatherIndicator/>
             </div>
             <div className='flex items-center justify-between gap-2'>
                 <Button label="Mega Quiz" />

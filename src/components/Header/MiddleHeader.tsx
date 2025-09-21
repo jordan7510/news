@@ -1,39 +1,53 @@
 "use client"
 import Image from "next/image";
-import Logo from "../../../public/assets/argus_logo.svg"
-import { useContext } from "react";
+import lightLogo from "../../../public/assets/argus_logo.svg"
+import darkLogo from "../../../public/assets/Argus_Logo _White.png"
+import { useContext, useEffect, useMemo, useState } from "react";
 import { AdsContext } from "@/context/AdsContext";
+import { useTheme } from "next-themes";
 
 export default function MiddleHeader() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const {theme} =useTheme()
 
   const ads = useContext(AdsContext)
-  const desktopAds = ads?.filter((ad) => ad.ad_platform == "desktop" && ad.ad_type == "Top")
-  console.log("desktopAds", desktopAds);
 
+  const desktopAds = useMemo(()=>{
+    return ads?.filter((ad) => ad.ad_platform == "desktop" && ad.ad_type == "Top") ?? []
+  },[ads]);
 
+  useEffect(()=>{
+    const interval = setInterval(()=>{
+      setCurrentIndex((prevIndex)=> {
+        if(!desktopAds) return 0;
+        return prevIndex === desktopAds.length -1 ? 0: prevIndex + 1
+      })
+    },5000)
+
+    return ()=> clearInterval(interval)
+  },[desktopAds])
 
   return (
-    <div className="flex items-center flex-row">
+    <div className="flex items-center justify-between py-2 border-b border-yellow-500">
       <div>
         <Image
-          src={Logo}
+          src={theme === "dark" ? darkLogo : lightLogo}
           alt="Logo" width={250} height={100}
         />
       </div>
-      <div className="h-[32]">
+      <div className="w-[1200px] h-[150px] flex items-center justify-center overflow-hidden">
         {
-          desktopAds?.map((ad,i) => {
-            return (
+          desktopAds?.length > 0 && (
               <Image
-              src={ad.ad_image}
-              alt={`${ad.brand_name}`}
-              layout="fill"
-              objectFit="contain"
-              key = {ad._id}
-            />
-            )
-          })
-        }
+              src={desktopAds[currentIndex].ad_image}
+              key = {desktopAds[currentIndex]._id}
+              alt={`${desktopAds[currentIndex].brand_name}`}
+              style={{ objectFit: "contain" }}
+              height={200}
+              width={1200}
+              />
+          )
+        }  
       </div>
     </div>
   )

@@ -1,0 +1,20 @@
+.slide-text {
+    animation: slideInOut 5s ease-in-out infinite;
+}
+
+@keyframes slideInOut {
+    0% {
+        left:90%;
+        /* start off-screen right */
+    }
+    20% {
+        left: 12%;
+        /* stop at 12% gap from left */
+
+    }
+    100% {
+        left: 12%;
+        /* stay in place */
+    }
+
+}

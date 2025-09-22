@@ -35,7 +35,7 @@ export default function MiddleHeader() {
           alt="Logo" width={250} height={100}
         />
       </div>
-      <div className="w-[1200px] h-[150px] flex items-center justify-center overflow-hidden">
+      <div className="w-[1200px] h-[130px] flex items-center justify-center overflow-hidden">
         {
           desktopAds?.length > 0 && (
               <Image

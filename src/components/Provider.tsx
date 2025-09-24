@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'next-themes'
 import AdsContextProvider from '@/context/AdsContext';
+import LanguageContextProvider from '@/context/LanguageContext';
 
 interface Props {
   children: React.ReactNode
@@ -14,9 +15,11 @@ export default function Provider({ children }: Props) {
   if (!mounted) return null
   return (
     <ThemeProvider attribute="class" enableSystem={true} defaultTheme="system" >
-      <AdsContextProvider>
-        {children}
-      </AdsContextProvider>
+      <LanguageContextProvider>
+        <AdsContextProvider>
+          {children}
+        </AdsContextProvider>
+      </LanguageContextProvider>
     </ThemeProvider>
   )
 }

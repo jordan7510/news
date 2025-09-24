@@ -4,20 +4,20 @@
 
 @keyframes slideInOut {
   0% {
-    right:0%;
+    transform: translateX(100%);
     opacity: 0;
   }
   20% {
-    right:50% ;
+    transform: translateX(0%);
     opacity: 1;
   }
   80% {
-    right:50%;
+    transform: translateX(0%);
     opacity: 1;
    
   }
   100% {
-    right:0%;
+    transform: translateX(100%);
     opacity:0
   }
   

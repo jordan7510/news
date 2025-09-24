@@ -45,6 +45,7 @@ export default function MiddleHeader() {
               style={{ objectFit: "contain" }}
               height={200}
               width={1200}
+              priority
               />
           )
         }  

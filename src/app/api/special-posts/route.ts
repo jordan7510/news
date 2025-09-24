@@ -7,11 +7,12 @@ export async function GET(req:NextRequest){
         const url = req.nextUrl;
         const searchParams = url.searchParams;
         const language = searchParams.get("language")
-        const res = await axios.get(`${newsApi.breakingNews}?language=${language}`);
-        const data = res.data.data
+        const limit = searchParams.get("limit")
+        const offset = searchParams.get("offset")
+        const res = await axios.get(`${newsApi.specialPosts}?language=${language}&limit=${limit}&offset=${offset}`);
+        const data = res.data
         return NextResponse.json(data)
     } catch (error) {
-        console.error("error getting breaking news", error)
-       
+        console.error("error getting special posts", error)
     }
 }

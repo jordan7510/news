@@ -1,24 +1,9 @@
 "use client"
+import { Cat } from "@/components/DataTypes/Types";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-interface Cat {
-    _id: string,
-    name: string,
-    slug: string,
-    main: boolean,
-    odia: string,
-    isActive: boolean,
-    metaTitle: string,
-    metaDescription: string,
-    __v: number,
-    metaTitleOdia: string,
-    metaDescriptionOdia: string,
-    metaKeywords: string,
-    hasPosts: [],
-    postCount: number,
-    hasActivePosts: boolean
-}
+
 
 export function useCategory() {
     const [category, setCategory] = useState<Cat[]>([])

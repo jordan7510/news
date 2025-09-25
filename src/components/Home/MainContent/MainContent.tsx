@@ -2,9 +2,9 @@
 import { Post } from "@/components/DataTypes/Types"
 import { useLanguage } from "@/context/LanguageContext"
 import axios from "axios"
-import Image from "next/image"
 import { useEffect, useState } from "react"
-import moment from "moment";
+import NewsBigCard from "../NewsBigCard/NewsBigCard"
+import NewsSmallCard from "../NewsSmallCard/NewsSmallCard"
 
 export default function MainContent() {
     const [posts, setPosts] = useState<Post[]>([])
@@ -29,40 +29,24 @@ export default function MainContent() {
         }
         fetchPosts()
     }, [lang])
+
     return (
-        <section className='grid grid-cols-12 border-b dark:border-white my-2'>
+        <section className='grid h-auto grid-cols-12 border-b dark:border-white my-2'>
             {/* Big card section */}
             <div className='col-span-4'>
                 {
-                    topPriporityPosts.map((post, i) => {
-                        const previewBody = post.body.slice(0, 200) + "...";
-                        return (
-                            <div
-                            className="px-2 w-[450px] shadow-md py-4 mb-4" 
-                            key={i}>
-                                <div className="relative w-full h-60">
-                                    <Image
-                                    className="rounded-md object-cover"
-                                        src={post?.thumbnail}
-                                        alt={post?.metaTitle}
-                                        fill
-                                        priority
-                                    />
-                                </div>
-                                    <p className="text-sm text-right text-gray-600 font-medium">{post.authors} | {moment(post.publishedTime).fromNow()}</p>
-                                <div className="py-2">
-                                    <h2 className="font-bold text-lg"><span className="text-brand">{post?.prefix} / </span>{post?.title}</h2>
-                                </div>
-                                <div >
-                                    <div dangerouslySetInnerHTML={{ __html: previewBody }}></div>
-                                </div>
-                            </div>
-                        )
-                    })
+                    topPriporityPosts.map((post, i) => <NewsBigCard key={i} post={post} />)
                 }
             </div>
             <div className='col-span-8'>
-                
+                <div className="w-2/3 grid grid-cols-2">
+                    {
+                        posts.map((post, i) => <NewsSmallCard key={i} post={post} />)
+                    }
+                </div>
+                <div className="w-1/3">
+
+                </div>
             </div>
         </section>
     )

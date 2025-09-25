@@ -8,7 +8,7 @@ interface Props {
   children: React.ReactNode
 }
 
-export default function Provider({ children }: Props) {
+export  function Provider({ children }: Props) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), [])
 

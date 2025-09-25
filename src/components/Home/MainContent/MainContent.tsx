@@ -30,7 +30,7 @@ export default function MainContent() {
         fetchPosts()
     }, [lang])
     return (
-        <section className='grid grid-col-12 border-b dark:border-white my-2'>
+        <section className='grid grid-cols-12 border-b dark:border-white my-2'>
             {/* Big card section */}
             <div className='col-span-4'>
                 {

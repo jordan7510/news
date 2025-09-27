@@ -23,7 +23,6 @@ export default function MiddleHeader() {
         return prevIndex === desktopAds.length -1 ? 0: prevIndex + 1
       })
     },5000)
-
     return ()=> clearInterval(interval)
   },[desktopAds])
 
@@ -35,16 +34,15 @@ export default function MiddleHeader() {
           alt="Logo" width={250} height={100}
         />
       </div>
-      <div className="w-[1200px] h-[130px] flex items-center justify-center overflow-hidden">
+      <div className="relative w-full h-32 flex items-center justify-center overflow-hidden">
         {
           desktopAds?.length > 0 && (
               <Image
+              className="object-contain"
               src={desktopAds[currentIndex].ad_image}
               key = {desktopAds[currentIndex]._id}
               alt={`${desktopAds[currentIndex].brand_name}`}
-              style={{ objectFit: "contain" }}
-              height={200}
-              width={1200}
+              fill
               priority
               />
           )

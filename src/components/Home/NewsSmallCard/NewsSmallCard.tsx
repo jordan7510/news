@@ -5,14 +5,15 @@ import React from 'react'
 
 export default function NewsSmallCard({post}:{post:Post}){
     return (
-        <div className="px-2 w-[250px] shadow-md py-4 mb-4">
-            <div className="relative w-full h-32">
+        <div className="px-2 shadow-md py-4 mb-4 border-b rounded-md">
+            <div>
                 <Image
-                    className="rounded-md object-cover"
+                    className="rounded-md"
                     src={post?.thumbnail}
                     alt={post?.metaTitle}
-                    fill
                     priority
+                    height={100}
+                    width={300}
                 />
             </div>
             <p className="text-xs text-right text-gray-600 font-medium">{post.authors} | {moment(post.publishedTime).fromNow()}</p>

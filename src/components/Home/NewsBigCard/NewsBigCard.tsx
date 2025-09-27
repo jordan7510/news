@@ -6,13 +6,14 @@ import React from 'react'
 export default function NewsBigCard({post}:{post:Post}){
     const previewBody = post.body.slice(0, 200) + "...";
     return (
-        <div className="px-2 w-[450px] shadow-md py-4 mb-4">
-            <div className="relative w-full h-60">
+        <div className="px-2 shadow-md py-4 mb-4 rounded-md border-b flex-1">
+            <div>
                 <Image
-                    className="rounded-md object-cover"
+                    className="rounded-md"
                     src={post?.thumbnail}
                     alt={post?.metaTitle}
-                    fill
+                    height={200}
+                    width={450}
                     priority
                 />
             </div>

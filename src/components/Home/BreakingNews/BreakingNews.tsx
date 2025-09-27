@@ -13,19 +13,20 @@ export default function BreakingNews() {
     }
 
     return (
-        <div className='bg-brand rounded-md text-white mt-2'>
-            <div>
-                <h2 className='p-1 font-bold text-lg font-'>Breaking News  <span className='font-normal'>|</span>
+        <div className='bg-brand rounded-md text-white mt-2 overflow-hidden'>
+            <div className='flex items-center whitespace-nowrap'>
+                <h2 className='p-1 font-bold text-lg font-'>
+                    Breaking News
+                    <span className='font-normal'> | </span>
                 </h2>
-            </div>
-            <div className='relative'>
                 <p
                     onAnimationIteration={handleAnimationIteration}
-                    className='absolute top-[-28px] left-36 slide-text text-white dark:text-white'
+                    className='slide-text text-white dark:text-white'
                 >
                     {breakingNewsTitles[currentIndex]}
                 </p>
             </div>
+
         </div>
     )
 }

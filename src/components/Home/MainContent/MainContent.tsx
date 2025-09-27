@@ -2,17 +2,22 @@
 import { Post } from "@/components/DataTypes/Types"
 import { useLanguage } from "@/context/LanguageContext"
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import NewsBigCard from "../NewsBigCard/NewsBigCard"
 import NewsSmallCard from "../NewsSmallCard/NewsSmallCard"
+import SideSquareAds from "../SideSquareAds/SideSquareAds"
+import { AdsContext } from "@/context/AdsContext"
+import LiveTV from "../LiveTV/LiveTV"
 
 export default function MainContent() {
     const [posts, setPosts] = useState<Post[]>([])
     const { lang } = useLanguage();
     const topPriporityPosts = posts.filter((post) => post.position < 3)
-    console.log("topPriporityPosts", topPriporityPosts)
-
-
+    const ads = useContext(AdsContext)
+    const SideSquarepAds = useMemo(() => {
+        return ads?.filter((ad) => ad.ad_platform == "desktop" && ad.ad_type == "Square" && ad.language == "Odia") ?? []
+    }, [ads]);
+    
     useEffect(() => {
         async function fetchPosts(): Promise<Post[]> {
             try {
@@ -31,78 +36,27 @@ export default function MainContent() {
     }, [lang])
 
     return (
-        <section className='grid h-auto grid-cols-12 border-b dark:border-white my-2'>
-            {/* Big card section */}
-            <div className='col-span-4'>
+        <section className='grid grid-cols-12 gap-x-1 border-b dark:border-white my-2'>
+            <div className="col-span-4 border-r p-1 flex flex-col h-full">
                 {
                     topPriporityPosts.map((post, i) => <NewsBigCard key={i} post={post} />)
                 }
             </div>
-            <div className='col-span-8'>
-                <div className="w-2/3 grid grid-cols-2">
+            <div className="col-span-8 grid grid-cols-12 ">
+                <div className="col-span-8 grid grid-cols-2 gap-y-0 gap-x-order-r p-1 ">
                     {
-                        posts.map((post, i) => <NewsSmallCard key={i} post={post} />)
+                        posts.slice(0,8).map((post, i) => <NewsSmallCard key={i} post={post} />)
                     }
                 </div>
-                <div className="w-1/3">
-
+                <div className="col-span-4 flex flex-col gap-4 items-center">
+                    <LiveTV/>
+                    {
+                        SideSquarepAds.slice(0,3).map((ad,i)=><SideSquareAds key={i} ad={ad} />)
+                    }
                 </div>
             </div>
+
         </section>
     )
 }
 
-
-// {/* Small card section */}
-//                 <div className='w-2/3'>
-//                     {
-//                         topPriporityPosts.map((post, i) => {
-//                             return (
-//                                 <div key={i} className="w-full flex flex-col items-center justify-between">
-//                                     <div>
-//                                         <Image
-//                                             src={post?.thumbnail}
-//                                             alt={post?.metaTitle}
-//                                             width={400}
-//                                             height={100}
-//                                             priority
-//                                         />
-//                                     </div>
-//                                     <div>
-//                                         <h2>{post?.prefix}<span> / </span>{post?.title}</h2>
-//                                     </div>
-//                                     <div>
-//                                         <p></p>
-//                                     </div>
-//                                 </div>
-//                             )
-//                         })
-//                     }
-//                 </div>
-//                 {/* Right Section */}
-//                 <div className='w-1/3'>
-
-//                     {
-//                         topPriporityPosts.map((post, i) => {
-//                             return (
-//                                 <div key={i} className="w-full flex flex-col items-center justify-between">
-//                                     <div>
-//                                         <Image
-//                                             src={post?.thumbnail}
-//                                             alt={post?.metaTitle}
-//                                             width={400}
-//                                             height={100}
-//                                             priority
-//                                         />
-//                                     </div>
-//                                     <div>
-//                                         <h2>{post?.prefix}<span> / </span>{post?.title}</h2>
-//                                     </div>
-//                                     <div>
-//                                         <p></p>
-//                                     </div>
-//                                 </div>
-//                             )
-//                         })
-//                     }
-//                 </div>

@@ -11,7 +11,7 @@ export default function SideSquareAds({ad}:{ad:AdsContextType}) {
         alt={ad.ad_image}
         priority
         height={100}
-        width={350}
+        width={360}
         className='object-contain'
         />
     </div>

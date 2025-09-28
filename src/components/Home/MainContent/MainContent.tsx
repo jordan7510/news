@@ -10,14 +10,14 @@ import { AdsContext } from "@/context/AdsContext"
 import LiveTV from "../LiveTV/LiveTV"
 
 export default function MainContent() {
-    const [posts, setPosts] = useState<Post[]>([])
+    const [posts, setPosts] = useState<Post[]>([]);
     const { lang } = useLanguage();
-    const topPriporityPosts = posts.filter((post) => post.position < 3)
-    const ads = useContext(AdsContext)
+    const topPriporityPosts = posts.filter((post) => post.position < 3);
+    const ads = useContext(AdsContext);
     const SideSquarepAds = useMemo(() => {
         return ads?.filter((ad) => ad.ad_platform == "desktop" && ad.ad_type == "Square" && ad.language == "Odia") ?? []
     }, [ads]);
-    
+
     useEffect(() => {
         async function fetchPosts(): Promise<Post[]> {
             try {
@@ -33,7 +33,11 @@ export default function MainContent() {
             }
         }
         fetchPosts()
+        
     }, [lang])
+
+   
+
 
     return (
         <section className='grid grid-cols-12 gap-x-1 border-b dark:border-white my-2'>
@@ -43,15 +47,15 @@ export default function MainContent() {
                 }
             </div>
             <div className="col-span-8 grid grid-cols-12 ">
-                <div className="col-span-8 grid grid-cols-2 gap-y-0 gap-x-order-r p-1 ">
+                <div className="col-span-8 grid grid-cols-2  gap-x-2 border-r p-1 ">
                     {
-                        posts.slice(0,8).map((post, i) => <NewsSmallCard key={i} post={post} />)
+                        posts.slice(0, 8).map((post, i) => <NewsSmallCard key={i} post={post} />)
                     }
                 </div>
-                <div className="col-span-4 flex flex-col gap-4 items-center">
+                <div className="col-span-4 px-2 py-3  space-y-4 ">
                     <LiveTV/>
                     {
-                        SideSquarepAds.slice(0,3).map((ad,i)=><SideSquareAds key={i} ad={ad} />)
+                        SideSquarepAds.slice(0, 3).map((ad, i) => <SideSquareAds key={i} ad={ad} />)
                     }
                 </div>
             </div>

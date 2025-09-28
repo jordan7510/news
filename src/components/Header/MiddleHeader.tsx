@@ -31,7 +31,10 @@ export default function MiddleHeader() {
       <div>
         <Image
           src={theme === "dark" ? darkLogo : lightLogo}
-          alt="Logo" width={250} height={100}
+          alt="Logo" 
+          width={250}
+           height={100}
+           priority
         />
       </div>
       <div className="relative w-full h-32 flex items-center justify-center overflow-hidden">

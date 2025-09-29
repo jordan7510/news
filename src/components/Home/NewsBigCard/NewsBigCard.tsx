@@ -6,10 +6,10 @@ import React from 'react'
 export default function NewsBigCard({post}:{post:Post}){
     const previewBody = post.body.slice(0, 200) + "...";
     return (
-        <div className="px-2 shadow-md py-4 mb-4 rounded-md border-b flex-1">
-            <div>
+        <div className="px-2 shadow-md py-4 mb-4 rounded-md border-b flex-1 cursor-pointer hover:shadow-brand  duration-300">
+            <div className='overflow-hidden rounded-md'>
                 <Image
-                    className="rounded-md"
+                     className="rounded-md hover:scale-110 overflow-hidden duration-300"
                     src={post?.thumbnail}
                     alt={post?.metaTitle}
                     height={200}

@@ -4,11 +4,8 @@ import { ThemeProvider } from 'next-themes'
 import AdsContextProvider from '@/context/AdsContext';
 import LanguageContextProvider from '@/context/LanguageContext';
 
-interface Props {
-  children: React.ReactNode
-}
 
-export  function Provider({ children }: Props) {
+export  function Provider({ children }: {children:React.ReactNode}) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), [])
 

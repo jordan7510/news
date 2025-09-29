@@ -47,9 +47,11 @@ export default function MainContent() {
                 }
             </div>
             <div className="col-span-8 grid grid-cols-12 ">
-                <div className="col-span-8 grid grid-cols-2  gap-x-2 border-r p-1 ">
+                <div className="col-span-8 grid grid-cols-2 gap-x-2 border-r p-1 ">
                     {
-                        posts.slice(0, 8).map((post, i) => <NewsSmallCard key={i} post={post} />)
+                        posts.slice(0, 8).map((post, i) => (
+                              <NewsSmallCard key={i} post={post} />
+                        ))
                     }
                 </div>
                 <div className="col-span-4 px-2 py-3  space-y-4 ">

@@ -5,18 +5,21 @@ import { BsFillHouseDoorFill } from "react-icons/bs";
 
 export default function BottomHeader() {
   const categories = useCategory()
-  const categoriesNames = categories.slice(7,19)
-  const {lang} = useLanguage()
-  
-  
+  const categoriesNames = categories.slice(7, 19)
+  const { lang } = useLanguage()
+
   return (
-    <div className="border-b border-yellow-600 align-middle py-3">
-      <ul className="flex gap-4 items-center ml-2">
-        <li><BsFillHouseDoorFill className="text-lg text-brand"/></li>
+    <div className="text-left border-b border-yellow-600 py-2 overflow-hidden whitespace-nowrap">
+      
+      <ul className="flex gap-4 px-2 items-center">
+        <li><BsFillHouseDoorFill className="text-lg text-brand flex-shrink-0" /></li>
         {
-          categoriesNames.map((catName,i)=>(
-            <li key={i} className="hover:text-brand cursor-pointer"><p>{lang === "Odia"? catName.odia :catName.name}</p></li>
-          ))
+          categoriesNames.map((catName, i) => (
+            <li key={i} className="hover:text-brand cursor-pointer flex-shrink-0">
+              {lang === "Odia" ? catName.odia : catName.name}
+            </li>
+          )
+          )
         }
       </ul>
     </div>

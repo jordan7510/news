@@ -1,6 +1,7 @@
 "use client"
 import { useLanguage } from "@/context/LanguageContext";
 import { useCategory } from "@/hooks/useCategory"
+import Link from "next/link";
 import { BsFillHouseDoorFill } from "react-icons/bs";
 
 export default function BottomHeader() {
@@ -15,9 +16,11 @@ export default function BottomHeader() {
         <li><BsFillHouseDoorFill className="text-lg text-brand flex-shrink-0" /></li>
         {
           categoriesNames.map((catName, i) => (
-            <li key={i} className="hover:text-brand cursor-pointer flex-shrink-0">
+            <Link href={`/${catName.slug}`} key={i}>
+            <li className="hover:text-brand cursor-pointer flex-shrink-0">
               {lang === "Odia" ? catName.odia : catName.name}
             </li>
+            </Link>
           )
           )
         }

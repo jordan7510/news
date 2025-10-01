@@ -2,24 +2,49 @@
 import { useLanguage } from "@/context/LanguageContext";
 import { useCategory } from "@/hooks/useCategory"
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { BsFillHouseDoorFill } from "react-icons/bs";
 
 export default function BottomHeader() {
+  const [activePath, setActivePath] = useState("")
   const categories = useCategory()
   const categoriesNames = categories.slice(7, 19)
   const { lang } = useLanguage()
+  const path = usePathname()
+
+  useEffect(() => {
+    const currentRoute = path.split("/")[1];
+    const activeCategory = categoriesNames.find((cat) => currentRoute === cat.slug)
+    if (currentRoute === "") {
+      setActivePath("/")
+    } else if (activeCategory) {
+      setActivePath(activeCategory.slug)
+    }
+  }, [path, activePath, categoriesNames])
+
+
 
   return (
     <div className="text-left border-b border-yellow-600 py-2 overflow-hidden whitespace-nowrap">
-      
+
       <ul className="flex gap-4 px-2 items-center">
-        <li><BsFillHouseDoorFill className="text-lg text-brand flex-shrink-0" /></li>
+        <Link
+          onClick={() => setActivePath("/")}
+          href={"/"}>
+          <li>
+            <BsFillHouseDoorFill className={`text-lg flex-shrink-0 ${activePath == "/" ? "text-brand" : "text-base"}`} />
+          </li>
+        </Link>
         {
-          categoriesNames.map((catName, i) => (
-            <Link href={`/${catName.slug}`} key={i}>
-            <li className="hover:text-brand cursor-pointer flex-shrink-0">
-              {lang === "Odia" ? catName.odia : catName.name}
-            </li>
+          categoriesNames.map((catName) => (
+            <Link
+              onClick={() => setActivePath(catName?.slug)}
+              href={`/${catName?.slug}`}
+              key={catName._id}>
+              <li className={` cursor-pointer flex-shrink-0 ${activePath == catName?.slug ? "text-brand" : "hover:text-brand"}`}>
+                {lang === "Odia" ? catName?.odia : catName?.name}
+              </li>
             </Link>
           )
           )

@@ -33,7 +33,9 @@ export default function LiveTV() {
       </div>
 
       {/* Player */}
-      <div className="w-full max-w-full overflow-hidden rounded-md aspect-video">
+      <div 
+       style={{ maxWidth: "400px", height: "200px", margin: "0 auto" }}
+      className="w-full overflow-hidden cursor-pointer relative">
         {loading ? (
           <p className="text-center text-gray-500">Loading...</p>
         ) : url ? (
@@ -42,8 +44,9 @@ export default function LiveTV() {
             playing
             muted
             controls
-            width={"120%"}
-            height={"120%"}
+            width={"100%"}
+            height={"100%"}
+            className="absolute"
           />
         ) : (
           <p className="text-gray-500 text-center">Live TV Not Available</p>

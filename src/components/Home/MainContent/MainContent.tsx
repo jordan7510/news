@@ -33,10 +33,7 @@ export default function MainContent() {
             }
         }
         fetchPosts()
-        
     }, [lang])
-
-   
 
 
     return (
@@ -61,7 +58,6 @@ export default function MainContent() {
                     }
                 </div>
             </div>
-
         </section>
     )
 }

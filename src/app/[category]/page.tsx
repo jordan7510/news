@@ -6,7 +6,7 @@ import React from 'react'
 export default function CategoryDetailPage() {
   
   const params = useParams()
-  const slug = params?.slug as string
+  const slug = params?.category as string
   console.log("slug",slug);
   
 

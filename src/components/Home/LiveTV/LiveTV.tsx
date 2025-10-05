@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 
@@ -26,31 +26,28 @@ export default function LiveTV() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col space-y-3">
+    <div className="w-full flex flex-col items-center space-y-3">
       {/* Header */}
-      <div className="w-full border border-brand text-center rounded-md ">
+      <div className="w-full border border-brand text-center rounded-md">
         <p className="font-medium">LIVE TV</p>
       </div>
 
-      {/* Player */}
-      <div 
-       style={{ maxWidth: "400px", height: "200px", margin: "0 auto" }}
-      className="w-full overflow-hidden cursor-pointer relative">
+      {/* Responsive Player Wrapper */}
+      <div className="rounded-md shadow-md">
+
         {loading ? (
           <p className="text-center text-gray-500">Loading...</p>
         ) : url ? (
-          <ReactPlayer
-            src={url}
-            playing
-            muted
-            controls
-            width={"100%"}
-            height={"100%"}
-            className="absolute"
-          />
+            <ReactPlayer
+              src={url} // dynamic URL
+              playing
+              controls
+              muted
+            />
         ) : (
           <p className="text-gray-500 text-center">Live TV Not Available</p>
         )}
+
       </div>
     </div>
   );

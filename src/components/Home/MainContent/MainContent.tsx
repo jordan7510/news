@@ -8,6 +8,7 @@ import NewsSmallCard from "../NewsSmallCard/NewsSmallCard"
 import SideSquareAds from "../SideSquareAds/SideSquareAds"
 import { AdsContext } from "@/context/AdsContext"
 import LiveTV from "../LiveTV/LiveTV"
+import Link from "next/link"
 
 export default function MainContent() {
     const [posts, setPosts] = useState<Post[]>([]);
@@ -35,24 +36,37 @@ export default function MainContent() {
         fetchPosts()
     }, [lang])
 
+    console.log("posts", posts);
+
 
     return (
         <section className='grid grid-cols-12 gap-x-1 border-b dark:border-white my-2'>
             <div className="col-span-4 border-r p-1 flex flex-col h-full">
                 {
-                    topPriporityPosts.map((post, i) => <NewsBigCard key={i} post={post} />)
+                    topPriporityPosts.map((post, i) => {
+                        return (
+                            <Link href={`/${post.slug}`} key={i}>
+                                <NewsBigCard post={post} />
+                            </Link>
+                        )
+                    })
                 }
             </div>
             <div className="col-span-8 grid grid-cols-12 ">
-                <div className="col-span-8 grid grid-cols-2 gap-x-2 border-r p-1 ">
+                <div className="col-span-8 grid grid-cols-2 gap-x-2 border-r p-1">
                     {
-                        posts.slice(0, 8).map((post, i) => (
-                              <NewsSmallCard key={i} post={post} />
-                        ))
+                        posts.slice(0, 8).map((post) => {
+                            return (
+                                <Link href={`/${post.slug}`} key={post._id}>
+                                    <NewsSmallCard post={post} />
+                                </Link>
+                            )
+                        }
+                        )
                     }
                 </div>
                 <div className="col-span-4 px-2 py-3  space-y-4 ">
-                    <LiveTV/>
+                    <LiveTV />
                     {
                         SideSquarepAds.slice(0, 3).map((ad, i) => <SideSquareAds key={i} ad={ad} />)
                     }

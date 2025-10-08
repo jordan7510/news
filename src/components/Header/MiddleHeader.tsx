@@ -28,7 +28,7 @@ export default function MiddleHeader() {
   }, [desktopAds])
 
   return (
-    <div className="flex items-center justify-between py-2 border-b border-yellow-500">
+    <div className="flex items-center justify-between py-2  ">
       <div>
         <Link href={"/"}>
           <Image

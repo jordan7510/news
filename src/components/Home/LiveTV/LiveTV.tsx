@@ -26,29 +26,30 @@ export default function LiveTV() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center space-y-3">
+    <div className="w-full flex flex-col items-center justify-between space-y-3 overflow-hidden">
       {/* Header */}
       <div className="w-full border border-brand text-center rounded-md">
         <p className="font-medium">LIVE TV</p>
       </div>
 
       {/* Responsive Player Wrapper */}
-      <div className="rounded-md shadow-md">
 
-        {loading ? (
-          <p className="text-center text-gray-500">Loading...</p>
-        ) : url ? (
-            <ReactPlayer
-              src={url} // dynamic URL
-              playing
-              controls
-              muted
-            />
-        ) : (
-          <p className="text-gray-500 text-center">Live TV Not Available</p>
-        )}
-
-      </div>
+      {loading ? (
+        <p className="text-center text-gray-500">Loading...</p>
+      ) : url ? (
+        <div className="aspect-auto">
+          <ReactPlayer
+            src={url} // dynamic URL
+            playing
+            controls
+            muted
+            width="100%"
+            height="100%"
+          />
+        </div>
+      ) : (
+        <p className="text-gray-500 text-center">Live TV Not Available</p>
+      )}
     </div>
   );
 }

@@ -26,7 +26,7 @@ export default function BottomHeader() {
 
 
   return (
-    <div className="text-left border-b border-yellow-600 py-2 overflow-hidden whitespace-nowrap">
+    <div className="text-left border-b border-t border-yellow-600 py-2 overflow-hidden whitespace-nowrap mb-4">
 
       <ul className="flex gap-4 px-2 items-center">
         <Link

@@ -13,10 +13,10 @@ export default function Header() {
     useEffect(() => {
         const handleScroll = () => {
             const currentScroll = window.scrollY;
-            if (currentScroll > lastScrollY && currentScroll >= 150) {
+            if (currentScroll > lastScrollY && currentScroll >= 170) {
                 setShowMiddle(false)
                 setLastScrollY(currentScroll)
-            } else if (currentScroll < 50) {
+            } else if (currentScroll < 30) {
                 setShowMiddle(true)
                 setLastScrollY(0)
                 window.scrollTo({

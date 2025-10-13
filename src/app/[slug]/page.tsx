@@ -1,5 +1,5 @@
 "use client"
-import { Post } from '@/components/DataTypes/Types';
+import { Post } from '@/utils/Types';
 import SideSquareAds from '@/components/Home/SideSquareAds/SideSquareAds';
 import { AdsContext } from '@/context/AdsContext';
 import { useLanguage } from '@/context/LanguageContext';

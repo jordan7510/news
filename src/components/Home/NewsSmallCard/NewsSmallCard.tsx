@@ -1,4 +1,4 @@
-import { Post } from '@/components/DataTypes/Types';
+import { Post } from '@/utils/Types';
 import moment from 'moment'
 import Image from 'next/image'
 import React from 'react'

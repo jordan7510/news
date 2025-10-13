@@ -1,4 +1,4 @@
-import { AdsContextType } from '@/components/DataTypes/Types';
+import { AdsContextType } from '@/utils/Types';
 import Image from 'next/image'
 import React from 'react'
 

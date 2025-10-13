@@ -1,7 +1,7 @@
 "use client"
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { AdsContextType } from "@/components/DataTypes/Types";
+import { AdsContextType } from "@/utils/Types";
 
 export const AdsContext = React.createContext<AdsContextType[] | undefined>(undefined)
 const AdsContextProvider = ({ children }: { children: React.ReactNode }) => {

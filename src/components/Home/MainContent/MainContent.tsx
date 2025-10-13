@@ -1,5 +1,5 @@
 "use client"
-import { Post } from "@/components/DataTypes/Types"
+import { Post } from "@/utils/Types"
 import { useLanguage } from "@/context/LanguageContext"
 import axios from "axios"
 import { useContext, useEffect, useMemo, useState } from "react"

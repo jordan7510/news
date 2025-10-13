@@ -6,7 +6,8 @@ import { useBreakingNews } from '@/hooks/useBreakingNews'
 export default function BreakingNews() {
     const [currentIndex, setCurrentIndex] = useState(0)
     const breakingNews = useBreakingNews();
-    const breakingNewsTitles = breakingNews.map((news) => news.title)
+    
+    const breakingNewsTitles = breakingNews?.map((news) => news.title)
 
     const handleAnimationIteration = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % breakingNewsTitles.length)

@@ -1,5 +1,5 @@
 "use client"
-import { Cat } from "@/components/DataTypes/Types";
+import { Cat } from "@/utils/Types";
 import axios from "axios";
 import { useEffect, useState } from "react";
 

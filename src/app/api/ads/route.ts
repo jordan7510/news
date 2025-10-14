@@ -1,19 +1,20 @@
 import dbConnect from "@/lib/dbConnect";
-import Ads from "@/models/AdsModel";
+import AdModel from "@/models/AdsModel";
 import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
         await dbConnect();
-        const allAds = await Ads.find();
+        const allAds = await AdModel.find();
         return NextResponse.json({ data: allAds }, { status: 200 })
     } catch (error) {
         console.log("error", error);
-        return NextResponse.json({
-            message: "Error getting all ads.",
-            error: error instanceof Error ? error.message : "Unknow error",
-            status: false,
-        },
+        return NextResponse.json(
+            {
+                message: "Error getting all ads.",
+                error: error instanceof Error ? error.message : "Unknow error",
+                status: false,
+            },
             { status: 500 }
         )
     }
@@ -32,9 +33,9 @@ export async function POST(req: Request) {
             if (body.length === 0)
                 return NextResponse.json({ message: "Array is empty" }, { status: 400 });
 
-            insertedAds = await Ads.insertMany(body); // bulk insert
+            insertedAds = await AdModel.insertMany(body); // bulk insert
         } else {
-            insertedAds = await Ads.create(body); // single insert
+            insertedAds = await AdModel.create(body); // single insert
         }
 
         return NextResponse.json(

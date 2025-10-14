@@ -1,5 +1,4 @@
 export interface Cat {
-    _id: string,
     name: string,
     slug: string,
     main: boolean,
@@ -7,7 +6,6 @@ export interface Cat {
     isActive: boolean,
     metaTitle: string,
     metaDescription: string,
-    __v: number,
     metaTitleOdia: string,
     metaDescriptionOdia: string,
     metaKeywords: string,
@@ -16,18 +14,15 @@ export interface Cat {
     hasActivePosts: boolean
 }
 export interface BreakingNews {
-    _id: string,
     language: string,
     title: string,
-    authors: boolean,
+    authors: [string],
     isActive: boolean,
     publishedTime: string,
     uid: string,
-    __v: number,
 }
 
 export interface Post{
-      _id: string,
       language: string,
       postType: string,
       isSpecial: boolean,
@@ -39,7 +34,7 @@ export interface Post{
       selectCategory: string,
       isBreaking: boolean,
       category: Cat[],
-      authors: string,
+      authors: [string],
       publishedTime: string,
       metaTitle: string,
       metaDescription: string,
@@ -55,13 +50,10 @@ export interface Post{
       prefix: string,
       keywords: [],
       uid: string,
-      __v: number,
       thumbnail: string,
-      id: string
 }
 
 export interface AdsContextType {
-    _id: string,
     brand_name: string,
     advetisement_name: string,
     ad_platform: string,

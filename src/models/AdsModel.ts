@@ -1,18 +1,19 @@
+import { AdsContextType } from "@/utils/Types";
 import mongoose from "mongoose";
 
-const adsSchema = new mongoose.Schema({
-    brand_name: String,
-    advetisement_name: String,
-    ad_platform: String,
-    ad_type: String,
-    ad_link: String,
-    daily_impression_limit: Number,
-    schedule: String,
-    status: String,
-    ad_image: String,
-    language: String,
-    publish: Date
+const adsSchema = new mongoose.Schema<AdsContextType>({
+    brand_name: {type:String,required:true},
+    advetisement_name: {type:String,required:true},
+    ad_platform: {type:String,required:true},
+    ad_type: {type:String,required:true},
+    ad_link: {type:String,required:true},
+    daily_impression_limit: {type:Number,default:0},
+    schedule: {type:String},
+    status: {type:String,default:"Active"},
+    ad_image: {type:String,required:true},
+    language: {type:String,required:true},
+    publish: {type:Date,default:Date.now()}
 })
 
-const Ads = mongoose.models.Ads || mongoose.model("Ads",adsSchema);
-export default Ads
+const AdModel = mongoose.models.Ads || mongoose.model("Ads",adsSchema);
+export default AdModel

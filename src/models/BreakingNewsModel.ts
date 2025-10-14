@@ -1,14 +1,13 @@
+import { BreakingNews } from "@/utils/Types";
 import mongoose from "mongoose";
 
-const breakingNewsSchema = new mongoose.Schema({
-    language: String,
-    title: String,
-    authors: String,
-    isActive: Boolean,
-    publishedTime: String,
-    uid: String,
-    __v: Number,
+const breakingNewsSchema = new mongoose.Schema<BreakingNews>({
+    language: {type:String,required:true},
+    title: {type:String,required:true},
+    authors: {type:[String],required:true},
+    isActive: {type:Boolean,default:true},
+    publishedTime: {type:String},
 })
 
-const BreakingNews = mongoose.models.breakingnews || mongoose.model("breakingnews",breakingNewsSchema);
-export default BreakingNews
+const BreakingNewsModel = mongoose.models.BreakingNews || mongoose.model("BreakingNews",breakingNewsSchema);
+export default BreakingNewsModel

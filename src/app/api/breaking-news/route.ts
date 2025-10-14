@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
-import BreakingNews from "@/models/BreakingNewsModel";
+import BreakingNewsModel from "@/models/BreakingNewsModel";
 import { FilterQuery } from "mongoose";
 
 export async function GET(req:NextRequest){
@@ -8,9 +8,9 @@ export async function GET(req:NextRequest){
         await dbConnect();
         // const {searchParams} = new URL(req.url);
         const language = req.nextUrl.searchParams.get("language")
-        const query:FilterQuery<typeof BreakingNews> ={};
+        const query:FilterQuery<typeof BreakingNewsModel> ={};
         if(language) query.language = language;
-        const allBreakingNews = await BreakingNews.find(query).sort({publishedTime:-1});
+        const allBreakingNews = await BreakingNewsModel.find(query).sort({publishedTime:-1});
         return NextResponse.json({ data: allBreakingNews }, { status: 200 })
     } catch (error) {
         console.log("error", error);
@@ -19,7 +19,7 @@ export async function GET(req:NextRequest){
             error: error instanceof Error ? error.message : "Unknow error",
             status: false,
         },
-            { status: 500 }
+        { status: 500 }
         )
     }
 }
@@ -37,9 +37,9 @@ export async function POST(req: Request) {
             if (body.length === 0)
                 return NextResponse.json({ message: "Array is empty" }, { status: 400 });
 
-            insertedBreakingNews = await BreakingNews.insertMany(body); // bulk insert
+            insertedBreakingNews = await BreakingNewsModel.insertMany(body); // bulk insert
         } else {
-            insertedBreakingNews = await BreakingNews.create(body); // single insert
+            insertedBreakingNews = await BreakingNewsModel.create(body); // single insert
         }
 
         return NextResponse.json(

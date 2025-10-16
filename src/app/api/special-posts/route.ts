@@ -5,21 +5,20 @@ import dbConnect from "@/lib/dbConnect";
 import PostModel from "@/models/PostModel";
 
 
-export async function GET(req:NextRequest){
+export async function GET(req: NextRequest) {
     try {
         const url = req.nextUrl;
         const searchParams = url.searchParams;
         const language = searchParams.get("language");
         const limit = searchParams.get("limit")
         const offset = searchParams.get("offset")
-        const res = await axios.get(`${newsApi.specialPosts}?language=${language}&limit=${limit}&offset=${offset}`);
-        const data = res.data
-        return NextResponse.json(data)
+        const res = await PostModel.find({language:`${language}`});
+        console.log("res",res)
+        return NextResponse.json(res)
     } catch (error) {
         console.error("error getting special posts", error)
     }
 }
-
 
 export async function POST(req: Request) {
 
@@ -31,9 +30,7 @@ export async function POST(req: Request) {
         }
         let insertedPost;
         if (Array.isArray(body)) {
-            if (body.length === 0)
-                return NextResponse.json({ message: "Array is empty" }, { status: 400 });
-
+            if (body.length === 0) return NextResponse.json({ message: "Array is empty" }, { status: 400 });
             insertedPost = await PostModel.insertMany(body);
         } else {
             insertedPost = await PostModel.create(body);
@@ -47,10 +44,7 @@ export async function POST(req: Request) {
     } catch (error) {
         console.error("Failed to insert Post:", error);
         return NextResponse.json(
-            {
-                message: "Failed to insert Posts",
-                error: error instanceof Error ? error.message : "Unknown error",
-            },
+            { message: "Failed to insert Posts", error: error instanceof Error ? error.message : "Unknown error" },
             { status: 500 }
         );
     }

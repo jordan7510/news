@@ -21,7 +21,7 @@ const PostSchema = new mongoose.Schema<Post>(
     articleSource: { type: String },
     url: { type: String },
     slug: { type: String, unique: true },
-    status: { type: Boolean, default: true },
+    status: { type: String, default: "ACTIVE" },
     scheduledTime: { type: String },
     views: { type: Number, default: 0 },
     content: { type: String },

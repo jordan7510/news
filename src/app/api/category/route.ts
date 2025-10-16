@@ -32,9 +32,7 @@ export async function POST(req: Request) {
         }
         let insertedCategory;
         if (Array.isArray(body)) {
-            if (body.length === 0)
-                return NextResponse.json({ message: "Array is empty" }, { status: 400 });
-
+            if (body.length === 0) return NextResponse.json({ message: "Array is empty" }, { status: 400 });
             insertedCategory = await CategoryModel.insertMany(body);
         } else {
             insertedCategory = await CategoryModel.create(body);

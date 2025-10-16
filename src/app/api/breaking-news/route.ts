@@ -34,8 +34,7 @@ export async function POST(req: Request) {
         let insertedBreakingNews;
 
         if (Array.isArray(body)) {
-            if (body.length === 0)
-                return NextResponse.json({ message: "Array is empty" }, { status: 400 });
+            if (body.length === 0)return NextResponse.json({ message: "Array is empty" }, { status: 400 });
 
             insertedBreakingNews = await BreakingNewsModel.insertMany(body); // bulk insert
         } else {

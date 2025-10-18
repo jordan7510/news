@@ -41,7 +41,7 @@ export default function BottomHeader() {
             <Link
               onClick={() => setActivePath(catName?.slug)}
               href={`/${catName?.slug}`}
-              key={catName._id}>
+              key={catName.slug}>
               <li className={` cursor-pointer flex-shrink-0 ${activePath == catName?.slug ? "text-brand" : "hover:text-brand"}`}>
                 {lang === "Odia" ? catName?.odia : catName?.name}
               </li>

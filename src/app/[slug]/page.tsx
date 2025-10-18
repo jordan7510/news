@@ -3,11 +3,11 @@ import { Post } from '@/utils/Types';
 import SideSquareAds from '@/components/Home/SideSquareAds/SideSquareAds';
 import { AdsContext } from '@/context/AdsContext';
 import { useLanguage } from '@/context/LanguageContext';
-import axios from 'axios';
 import moment from 'moment';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
+import Breadcrumb from '@/components/BreadCrumbs/BreadCrumbs';
 
 export default function ArticleDetailPage() {
   const [post, setPost] = useState<Post[]>([]);
@@ -23,8 +23,9 @@ export default function ArticleDetailPage() {
   useEffect(() => {
     async function fetchPosts(): Promise<Post[]> {
       try {
-        const res = await axios.get(`/api/special-posts?language=${lang}`)
-        const posts: Post[] = res?.data?.posts
+        const res = await fetch(`/api/special-posts?language=${lang}`)
+        const data = await res.json()
+        const posts: Post[] = data?.data
         const found = posts.filter((p) => p.slug === slug)
         if (found) {
           setPost(found || null)
@@ -36,7 +37,7 @@ export default function ArticleDetailPage() {
       }
     }
     fetchPosts()
-  }, [lang])
+  }, [lang,slug])
 
   console.log("posts", post);
 
@@ -44,7 +45,8 @@ export default function ArticleDetailPage() {
 
   return (
     <section>
-      <div className='grid grid-cols-12 mt-2'>
+      <Breadcrumb/>
+      <div className='grid grid-cols-12'>
         <div className='col-span-8'>
           <div className='space-y-3 px-2 py-4'>
             <div>
@@ -78,7 +80,7 @@ export default function ArticleDetailPage() {
           <p className='text-center text-lg font-medium py-2'>Sponsored !</p>
           <div className='flex flex-col items-center justify-center gap-6'>
             {
-              sideAds.slice(0, 3).map((ad) => <SideSquareAds key={ad._id} ad={ad} />)
+              sideAds.slice(0, 3).map((ad,i) => <SideSquareAds key={i} ad={ad} />)
             }
           </div>
         </div>

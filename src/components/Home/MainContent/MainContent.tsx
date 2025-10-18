@@ -1,7 +1,6 @@
 "use client"
 import { Post } from "@/utils/Types"
 import { useLanguage } from "@/context/LanguageContext"
-import axios from "axios"
 import { useContext, useEffect, useMemo, useState } from "react"
 import NewsBigCard from "../NewsBigCard/NewsBigCard"
 import NewsSmallCard from "../NewsSmallCard/NewsSmallCard"
@@ -22,10 +21,15 @@ export default function MainContent() {
     useEffect(() => {
         async function fetchPosts(): Promise<Post[]> {
             try {
-                const res = await axios.get(`/api/special-posts?language=${lang}`)
-                const data = res.data.posts
+                const res = await fetch(`/api/special-posts?language=${lang}`)
+                console.log("posts response",res);
+                const data = await res.json()
+                
+                // const data = res.data.posts
+                console.log("posts data",data);
+                
                 if (data) {
-                    setPosts(data)
+                    setPosts(data.data)
                 }
                 return data
             } catch (error) {
@@ -43,9 +47,9 @@ export default function MainContent() {
         <section className='grid grid-cols-12 gap-x-1 border-b dark:border-white my-2'>
             <div className="col-span-4 border-r p-1 flex flex-col h-full">
                 {
-                    topPriporityPosts.map((post, i) => {
+                    topPriporityPosts.map((post) => {
                         return (
-                            <Link href={`/${post.slug}`} key={i}>
+                            <Link href={`/${post.slug}`} key={post.uid}>
                                 <NewsBigCard post={post} />
                             </Link>
                         )
@@ -57,7 +61,7 @@ export default function MainContent() {
                     {
                         posts.slice(0, 8).map((post) => {
                             return (
-                                <Link href={`/${post.slug}`} key={post._id}>
+                                <Link href={`/${post.slug}`} key={post.uid}>
                                     <NewsSmallCard post={post} />
                                 </Link>
                             )

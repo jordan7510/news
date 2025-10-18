@@ -8,7 +8,7 @@ export async function GET() {
         dbConnect();
         const allCategory = await CategoryModel.find();
 
-        return NextResponse.json({ data: allCategory }, { status: 200 })
+        return NextResponse.json({ data: allCategory,success:true,message:"Fetch success" }, { status: 200 })
     } catch (error) {
         console.log("error", error);
         return NextResponse.json(
@@ -18,7 +18,7 @@ export async function GET() {
                 status: false,
             },
             { status: 500 }
-        )
+        )   
     }
 }
 

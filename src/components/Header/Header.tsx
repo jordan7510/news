@@ -35,7 +35,7 @@ export default function Header() {
         <div className='sticky top-0 z-50 bg-white dark:bg-black'>
             <TopHeader />
             <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${showMiddle ? "h-36 " : "h-0"}`}
+                className={`hidden md:block overflow-hidden transition-all duration-500 ease-in-out ${showMiddle ? "h-36 " : "h-0"}`}
             >
                 <div
                     className={`transition-transform duration-500 ease-in-out ${showMiddle ? "translate-y-0" : "-translate-y-[400px]"

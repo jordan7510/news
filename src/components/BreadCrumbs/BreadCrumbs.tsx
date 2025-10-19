@@ -34,7 +34,7 @@ export default function Breadcrumb() {
             ) : (
               <Link
                 href={crumb.href}
-                className="hover:underline text-blue-600"
+                className="hover:underline text-brand"
               >
                 {crumb.label}
               </Link>

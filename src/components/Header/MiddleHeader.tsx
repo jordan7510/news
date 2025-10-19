@@ -28,8 +28,8 @@ export default function MiddleHeader() {
   }, [desktopAds])
 
   return (
-    <div className="flex items-center justify-between py-2  ">
-      <div>
+    <div className=" hidden md:flex items-center justify-between py-2  ">
+      <div className="">
         <Link href={"/"}>
           <Image
             src={theme === "dark" ? darkLogo : lightLogo}
@@ -46,7 +46,7 @@ export default function MiddleHeader() {
             <Image
               className="object-contain"
               src={desktopAds[currentIndex].ad_image}
-              key={desktopAds[currentIndex]._id}
+              key={desktopAds[currentIndex].advetisement_name}
               alt={`${desktopAds[currentIndex].brand_name}`}
               fill
               priority

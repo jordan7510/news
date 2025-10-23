@@ -7,8 +7,6 @@ import { useEffect, useState } from "react";
 export function useBreakingNews() {
     const {lang} = useLanguage()
     const [breakingNews, setBreakingNews] = useState<BreakingNews[]>([])
-
-
     useEffect(() => {
         async function getBreaking(): Promise<BreakingNews[]> {
             try {
@@ -24,7 +22,6 @@ export function useBreakingNews() {
         }
         getBreaking()
     }, [lang])
-    console.log("breakingNews",breakingNews);
     return breakingNews
 }
 

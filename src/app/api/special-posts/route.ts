@@ -6,14 +6,11 @@ import { FilterQuery } from "mongoose";
 
 export async function GET(req: NextRequest) {
     try {
+        await dbConnect()
         const url = req.nextUrl;
         const searchParams = url.searchParams;
         const language = searchParams.get("language");
-        console.log("language",language);
-        
         const limit = parseInt(searchParams.get("limit") || "10", 10)
-        console.log("limit",limit);
-        
         // const offset = parseInt(searchParams.get("offset") || "10", 10)
         // console.log("offset",offset);
         
@@ -48,32 +45,3 @@ export async function GET(req: NextRequest) {
     }
 }
 
-export async function POST(req: Request) {
-
-    try {
-        dbConnect();
-        const body = await req.json();
-        if (!body) {
-            return NextResponse.json({ message: "Request body is empty" }, { status: 400 });
-        }
-        let insertedPost;
-        if (Array.isArray(body)) {
-            if (body.length === 0) return NextResponse.json({ message: "Array is empty" }, { status: 400 });
-            insertedPost = await PostModel.insertMany(body);
-        } else {
-            insertedPost = await PostModel.create(body);
-        }
-
-        return NextResponse.json(
-            { message: "Post inserted successfully", data: insertedPost },
-            { status: 201 }
-        );
-
-    } catch (error) {
-        console.error("Failed to insert Post:", error);
-        return NextResponse.json(
-            { message: "Failed to insert Posts", error: error instanceof Error ? error.message : "Unknown error" },
-            { status: 500 }
-        );
-    }
-}

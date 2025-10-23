@@ -13,8 +13,9 @@ export default function ArticleDetailPage() {
   const [post, setPost] = useState<Post[]>([]);
   const { lang } = useLanguage();
   const params = useParams()
-  const slug = params?.slug as string
+  const topic = params?.topic as string
   const ads = useContext(AdsContext);
+  const limit = 20
 
   const sideAds = useMemo(() => {
     return ads?.filter((ad) => ad.ad_platform == "desktop" && ad.ad_type == "Square" && ad.language == "Odia") ?? []
@@ -23,12 +24,12 @@ export default function ArticleDetailPage() {
   useEffect(() => {
     async function fetchPosts(): Promise<Post[]> {
       try {
-        const res = await fetch(`/api/special-posts?language=${lang}`)
+        const res = await fetch(`/api/post/${topic}/?language=${lang}&limit=${limit}`)
         const data = await res.json()
         const posts: Post[] = data?.data
-        const found = posts.filter((p) => p.slug === slug)
-        if (found) {
-          setPost(found || null)
+        // const found = posts.filter((p) => p.slug === slug)
+        if (posts.length > 0) {
+          setPost(posts)
         }
         return posts
       } catch (error) {
@@ -37,7 +38,7 @@ export default function ArticleDetailPage() {
       }
     }
     fetchPosts()
-  }, [lang,slug])
+  }, [lang,topic])
 
   console.log("posts", post);
 

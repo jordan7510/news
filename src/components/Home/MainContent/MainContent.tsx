@@ -22,12 +22,7 @@ export default function MainContent() {
         async function fetchPosts(): Promise<Post[]> {
             try {
                 const res = await fetch(`/api/special-posts?language=${lang}`)
-                console.log("posts response", res);
                 const data = await res.json()
-
-                // const data = res.data.posts
-                console.log("posts data", data);
-
                 if (data) {
                     setPosts(data.data)
                 }
@@ -39,10 +34,6 @@ export default function MainContent() {
         }
         fetchPosts()
     }, [lang])
-
-    console.log("posts", posts);
-
-
     return (
         <section className='grid grid-cols-1 md:grid-cols-12 gap-x-1 border-b dark:border-white my-2'>
             <div className="col-span-4 border-r p-1 grid grid-rows-2">

@@ -15,13 +15,13 @@ export default function BottomHeader() {
 
   useEffect(() => {
     const currentRoute = path.split("/")[1];
-    const activeCategory = categoriesNames.find((cat) => currentRoute === cat.slug)
+    const activeCategory = categories.find((cat) => currentRoute === cat.slug)
     if (currentRoute === "") {
       setActivePath("/")
     } else if (activeCategory) {
       setActivePath(activeCategory.slug)
     }
-  }, [path, activePath, categoriesNames])
+  }, [path, activePath, categories])
 
 
 
@@ -37,7 +37,7 @@ export default function BottomHeader() {
           </li>
         </Link>
         {
-          categoriesNames.map((catName) => (
+          categories.map((catName) => (
             <Link
               onClick={() => setActivePath(catName?.slug)}
               href={`/${catName?.slug}`}

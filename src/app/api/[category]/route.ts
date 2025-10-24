@@ -3,10 +3,8 @@ import CategoryModel from "@/models/CategoryModel";
 import PostModel from "@/models/PostModel";
 import { NextRequest, NextResponse } from "next/server";
 
-interface categoryParamsProps{
-    params:Promise<{category:string}>
-}
-export async function GET(req: NextRequest,{params}:categoryParamsProps ) {
+
+export async function GET(req: NextRequest,{params}:{params:Promise<{category:string}>} ) {
 
     try {
         await dbConnect();

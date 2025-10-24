@@ -14,8 +14,8 @@ export default function ArticleDetailPage() {
   const { lang } = useLanguage();
   const params = useParams()
   const topic = params?.topic as string
+  const article = params?.article as string
   const ads = useContext(AdsContext);
-  const limit = 20
 
   const sideAds = useMemo(() => {
     return ads?.filter((ad) => ad.ad_platform == "desktop" && ad.ad_type == "Square" && ad.language == "Odia") ?? []
@@ -24,7 +24,7 @@ export default function ArticleDetailPage() {
   useEffect(() => {
     async function fetchPosts(): Promise<Post[]> {
       try {
-        const res = await fetch(`/api/post/${topic}/?language=${lang}&limit=${limit}`)
+        const res = await fetch(`/api/post/${topic}/${article}/?language=${lang}`)
         const data = await res.json()
         const posts: Post[] = data?.data
         // const found = posts.filter((p) => p.slug === slug)
@@ -48,7 +48,7 @@ export default function ArticleDetailPage() {
     <section>
       <Breadcrumb/>
       <div className='grid grid-cols-12'>
-        <div className='col-span-8'>
+        {/* <div className='col-span-8'>
           <div className='space-y-3 px-2 py-4'>
             <div>
               <h2 className="font-bold text-lg"><span className="text-brand">{post[0]?.location} / </span>{post[0]?.title}</h2>
@@ -76,7 +76,7 @@ export default function ArticleDetailPage() {
             <div className='border border-brand py-4 px-2 rounded-md' dangerouslySetInnerHTML={{ __html: post[0]?.highlights }}></div>
             <div dangerouslySetInnerHTML={{ __html: post[0]?.body }}></div>
           </div>
-        </div>
+        </div> */}
         <div className='col-span-4 pt-4'>
           <p className='text-center text-lg font-medium py-2'>Sponsored !</p>
           <div className='flex flex-col items-center justify-center gap-6'>

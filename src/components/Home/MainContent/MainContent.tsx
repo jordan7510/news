@@ -40,7 +40,7 @@ export default function MainContent() {
                 {
                     topPriporityPosts.slice(0, 2).map((post) => {
                         return (
-                            <Link className="h-full" href={`/${post.slug}`} key={post.uid}>
+                            <Link className="h-full" href={`/${post.category[0].slug}/${post.slug}`} key={post.uid}>
                                 <NewsBigCard post={post} />
                             </Link>
                         )
@@ -52,7 +52,7 @@ export default function MainContent() {
                     {
                         posts.slice(0, 8).map((post) => {
                             return (
-                                <Link className="h-full" href={`/${post.slug}`} key={post.uid}>
+                                <Link className="h-full" href={`/${post.category[0].slug}/${post.slug}`} key={post.uid}>
                                     <NewsSmallCard post={post} />
                                 </Link>
                             )

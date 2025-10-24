@@ -19,18 +19,18 @@ export default function Breadcrumb() {
   });
 
   return (
-    <nav className="text-sm text-gray-600 pl-2">
+    <nav className="text-sm  pl-2">
       <ul className="flex flex-wrap items-center space-x-2">
         <li>
-          <Link href="/" className="hover:underline text-brand text-lg font-bold">
-            <BsFillHouseDoorFill/>
+          <Link href="/" className="hover:underline hover:text-brand text-base">
+            <p className="flex items-center justify-center gap-1"><BsFillHouseDoorFill /> <p className="">Home</p> </p>
           </Link>
         </li>
         {breadcrumbs.map((crumb, index) => (
           <li key={crumb.href} className="flex items-center">
-            <span className="mx-1 text-gray-400">/</span>
+            <span className="mx-1 text-lg text-brand">{"> "}</span>
             {index === breadcrumbs.length - 1 ? (
-              <span className="text-gray-800 font-semibold">{crumb.label}</span>
+              <span className="text-base">{crumb.label}</span>
             ) : (
               <Link
                 href={crumb.href}

@@ -3,11 +3,13 @@ import { Post } from '@/utils/Types';
 import SideSquareAds from '@/components/Home/SideSquareAds/SideSquareAds';
 import { AdsContext } from '@/context/AdsContext';
 import { useLanguage } from '@/context/LanguageContext';
-import moment from 'moment';
-import Image from 'next/image';
 import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import Breadcrumb from '@/components/BreadCrumbs/BreadCrumbs';
+import CategoryBigCard from './components/CategoryBigCard';
+import CategoryTrendingCard from './components/CategoryTrendingCard';
+import CategorySmallCard from './components/CategorySmallCard';
+import Link from 'next/link';
 
 export default function CategoryPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -48,67 +50,61 @@ export default function CategoryPage() {
     <section>
 
       <div className='grid grid-cols-12'>
-        <div className='col-span-8 flex'>
-          <div className='w-1/3'>
+
+        <div className='col-span-9 flex'>
+
+          <div className='w-1/3 mx-1'>
             <p className='border-r-gray-500 dark:text-white text-white bg-gray-600 rounded-md text-center p-1'>
               Trending
             </p>
             {
-              posts.map((post, i) => {
+              posts.slice(0, 10).map((post, i) => {
                 return (
-                  <div className='flex gap-4 rounded-md my-6 shadow-md p-2  hover:cursor-pointer' key={i}>
-                    <div>
-                      <Image
-                        src={post.thumbnail}
-                        height={80}
-                        width={120}
-                        priority
-                        alt={post.thumbnail}
-                        className='rounded-lg'
-                      />
-                    </div>
-
-                    <div>
-                      <h2 className="font-bold text-xs hover:underline hover:cursor-pointer"><span className="text-brand">{post.location} / </span>{post.title}</h2>
-                      <p className="text-xs  text-gray-600 font-medium">{post?.authors} | {moment(post?.publishedTime).fromNow()}</p>
-                    </div>
-                  </div>
+                  <Link key={i} href={`/${post.category[0].slug}/${post.slug}`}>
+                    <CategoryTrendingCard
+                      post={post}
+                    />
+                  </Link>
                 )
               })
             }
           </div>
-          <div className='w-2/3'>
+
+          <div className='w-2/3 mx-1'>
             <Breadcrumb />
             <div className='col-span-3'>
-
               {
-                posts.map((post, i) => {
+                posts.slice(0, 1).map((post, i) => {
                   return (
-                    <div className='flex gap-4 rounded-md my-6 shadow-md p-2  hover:cursor-pointer' key={i}>
-                      <div>
-                        <Image
-                          src={post.thumbnail}
-                          height={80}
-                          width={120}
-                          priority
-                          alt={post.thumbnail}
-                          className='rounded-lg'
-                        />
-                      </div>
-
-                      <div>
-                        <h2 className="font-bold text-xs hover:underline hover:cursor-pointer"><span className="text-brand">{post.location} / </span>{post.title}</h2>
-                        <p className="text-xs  text-gray-600 font-medium">{post?.authors} | {moment(post?.publishedTime).fromNow()}</p>
-                      </div>
-                    </div>
+                    <Link key={i} href={`/${post.category[0].slug}/${post.slug}`}>
+                      <CategoryBigCard post={post} />
+                    </Link>
                   )
                 })
               }
 
+
+              {
+                posts.slice(0, 5).map((post, i) => {
+                  return (
+                    <Link key={i} href={`/${post.category[0].slug}/${post.slug}`}>
+                      <CategorySmallCard
+                        post={post}
+                      />
+                    </Link>
+                  )
+                })
+              }
             </div>
+
           </div>
+
         </div>
-        <div className='col-span-4 pt-4'>
+
+
+
+
+        <div className='col-span-3 pt-4'>
           <p className='text-center text-lg font-medium py-2'>Sponsored !</p>
           <div className='flex flex-col items-center justify-center gap-6'>
             {

@@ -1,14 +1,23 @@
 import dbConnect from "@/lib/dbConnect";
 import CategoryModel from "@/models/CategoryModel";
+import { getCache } from "@/utils/getCache";
+import { setCache } from "@/utils/setCache";
 import { NextResponse } from "next/server";
 
 export async function GET() {
 
     try {
+        const cached = await getCache("category")
+        if (cached) {
+            return NextResponse.json({ data: cached, message: "Fetched successfully", success: true }, { status: 200 })
+        }
         dbConnect();
         const allCategory = await CategoryModel.find();
-
-        return NextResponse.json({ data: allCategory,success:true,message:"Fetch success" }, { status: 200 })
+        if (allCategory.length > 0) {
+            await setCache("category", allCategory, 3600)
+            return NextResponse.json({ data: allCategory, success: true, message: "Fetch success" }, { status: 200 })
+        }
+        return []
     } catch (error) {
         console.log("error", error);
         return NextResponse.json(
@@ -18,7 +27,7 @@ export async function GET() {
                 status: false,
             },
             { status: 500 }
-        )   
+        )
     }
 }
 

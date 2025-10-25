@@ -1,6 +1,8 @@
 import dbConnect from "@/lib/dbConnect";
 import CategoryModel from "@/models/CategoryModel";
 import PostModel from "@/models/PostModel";
+import { getCache } from "@/utils/getCache";
+import { setCache } from "@/utils/setCache";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -10,6 +12,10 @@ export async function GET(
 ) {
 
     try {
+        const cached = await getCache("[slug]")
+        if (cached) {
+            return NextResponse.json({ data: cached, message: "Fetch successfully", success: true })
+        }
         await dbConnect();
         const { category, slug } = await params;
         const categoryRegex = new RegExp(`^${category}$`, "i")
@@ -27,9 +33,9 @@ export async function GET(
         }).populate("category");
 
         if (!post) {
-            return NextResponse.json({ message: "Post not found.",success:false }, { status: 404 })
+            return NextResponse.json({ message: "Post not found.", success: false }, { status: 404 })
         }
-
+        await setCache("[slug]", post, 3600)
         return NextResponse.json({ data: post, message: "Fetch successfully", success: true })
     } catch (error) {
         console.error(error)

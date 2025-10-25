@@ -2,16 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import BreakingNewsModel from "@/models/BreakingNewsModel";
 import { FilterQuery } from "mongoose";
+import { getCache } from "@/utils/getCache";
+import { setCache } from "@/utils/setCache";
 
 export async function GET(req:NextRequest){
     try {
+        const cached = await getCache("breaking-news")
+        if(cached){
+            return NextResponse.json({ data: cached, message: "Fetched successfully", success: true}, { status: 200 })
+        }
         await dbConnect();
         // const {searchParams} = new URL(req.url);
         const language = req.nextUrl.searchParams.get("language")
         const query:FilterQuery<typeof BreakingNewsModel> ={};
         if(language) query.language = language;
         const allBreakingNews = await BreakingNewsModel.find(query).sort({publishedTime:-1});
-        return NextResponse.json({ data: allBreakingNews }, { status: 200 })
+        if(allBreakingNews.length > 0){
+            await setCache("special-posts",allBreakingNews,3600)
+            return NextResponse.json({ data: allBreakingNews }, { status: 200 })
+        }
+        return []
     } catch (error) {
         console.log("error", error);
         return NextResponse.json({

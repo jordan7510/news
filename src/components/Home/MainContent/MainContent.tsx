@@ -23,6 +23,7 @@ export default function MainContent() {
             try {
                 const res = await fetch(`/api/special-posts?language=${lang}`)
                 const data = await res.json()
+                console.log("data",data.data)
                 if (data) {
                     setPosts(data.data)
                 }

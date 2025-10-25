@@ -2,7 +2,6 @@
 import { Post } from '@/utils/Types';
 import SideSquareAds from '@/components/Home/SideSquareAds/SideSquareAds';
 import { AdsContext } from '@/context/AdsContext';
-import { useLanguage } from '@/context/LanguageContext';
 import moment from 'moment';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'
@@ -10,8 +9,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react'
 import Breadcrumb from '@/components/BreadCrumbs/BreadCrumbs';
 
 export default function ArticleDetailPage() {
-  const [post, setPost] = useState<Post[]>([]);
-  const { lang } = useLanguage();
+  const [post, setPost] = useState<Post | null>(null);
   const params = useParams()
   const topic = params?.topic as string
   const article = params?.article as string
@@ -22,46 +20,48 @@ export default function ArticleDetailPage() {
   }, [ads]);
 
   useEffect(() => {
-    async function fetchPosts(): Promise<Post[]> {
+    async function fetchPosts(){
       try {
-        const res = await fetch(`/api/post/${topic}/${article}/?language=${lang}`)
+        const res = await fetch(`/api/${topic}/${article}`)
         const data = await res.json()
-        const posts: Post[] = data?.data
-        // const found = posts.filter((p) => p.slug === slug)
-        if (posts.length > 0) {
-          setPost(posts)
+        if (data?.data) {
+          setPost(data.data)
         }
-        return posts
       } catch (error) {
         console.error("error fething post", error)
-        return []
       }
     }
     fetchPosts()
-  }, [lang,topic])
+  }, [ topic, article])
 
   console.log("posts", post);
 
+  if(!post){
+    return <p className="text-center, py-2">Loading article</p>
+  }
 
 
   return (
     <section>
       <Breadcrumb/>
       <div className='grid grid-cols-12'>
-        {/* <div className='col-span-8'>
+        <div className='col-span-8'>
           <div className='space-y-3 px-2 py-4'>
+            {
+
+            }
             <div>
-              <h2 className="font-bold text-lg"><span className="text-brand">{post[0]?.location} / </span>{post[0]?.title}</h2>
+              <h2 className="font-bold text-lg"><span className="text-brand">{post.location} / </span>{post.title}</h2>
             </div>
             <div>
-              <p className="text-sm  text-gray-600 font-medium">{post[0]?.authors} | {moment(post[0]?.publishedTime).fromNow()}</p>
+              <p className="text-sm  text-gray-600 font-medium">{post.authors} | {moment(post.publishedTime).fromNow()}</p>
             </div>
           </div>
-          {post[0]?.thumbnail ? (
+          {post.thumbnail ? (
             <div className='relative h-[450px]'>
               <Image
-                alt={post[0]?.title || "Article image"}
-                src={post[0]?.thumbnail}
+                alt={post.title || "Article image"}
+                src={post.thumbnail}
                 fill
               />
             </div>
@@ -73,10 +73,10 @@ export default function ArticleDetailPage() {
 
           <div className='p-4 space-y-3 rounded-md shadow-md'>
             <h2 className='text-brand font-bold text-lg'>Highlights</h2>
-            <div className='border border-brand py-4 px-2 rounded-md' dangerouslySetInnerHTML={{ __html: post[0]?.highlights }}></div>
-            <div dangerouslySetInnerHTML={{ __html: post[0]?.body }}></div>
+            <div className='border border-brand py-4 px-2 rounded-md' dangerouslySetInnerHTML={{ __html: post.highlights }}></div>
+            <div dangerouslySetInnerHTML={{ __html: post.body }}></div>
           </div>
-        </div> */}
+        </div>
         <div className='col-span-4 pt-4'>
           <p className='text-center text-lg font-medium py-2'>Sponsored !</p>
           <div className='flex flex-col items-center justify-center gap-6'>

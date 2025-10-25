@@ -2,10 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import PostModel from "@/models/PostModel";
 import { FilterQuery } from "mongoose";
+import { getRedisClient } from "@/lib/redisClient";
 
 
 export async function GET(req: NextRequest) {
     try {
+        const redis = getRedisClient();
+        await redis.connect();
+        const cached = await redis.get("special-posts")
+        if(cached){
+            const specialPost = JSON.parse(cached)
+            const count = specialPost.length
+            return  NextResponse.json({data:specialPost, message:"Fetched successfully",success:true,count:count},{status:200})
+        }
         await dbConnect()
         const url = req.nextUrl;
         const searchParams = url.searchParams;
@@ -39,6 +48,9 @@ export async function GET(req: NextRequest) {
         .limit(limit)
         const count = res.length
         ;
+        
+        await redis.connect();
+        await redis.set("special-posts",JSON.stringify(res), "EX", 3600)
         return NextResponse.json({data:res,message:"Fetched successfully",success:true,count:count},{status:200})
     } catch (error) {
         console.error("error getting special posts", error)

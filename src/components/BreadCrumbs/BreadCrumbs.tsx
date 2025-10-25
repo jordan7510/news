@@ -22,19 +22,21 @@ export default function Breadcrumb() {
     <nav className="text-sm  pl-2">
       <ul className="flex flex-wrap items-center space-x-2">
         <li>
-          <Link href="/" className="hover:underline hover:text-brand text-base">
-            <p className="flex items-center justify-center gap-1"><BsFillHouseDoorFill /> <p className="">Home</p> </p>
+          <Link href="/" className="hover:underline  text-base">
+            <p className="flex items-center justify-center gap-1">
+              <BsFillHouseDoorFill /> <span className="">Home</span>
+            </p>
           </Link>
         </li>
         {breadcrumbs.map((crumb, index) => (
           <li key={crumb.href} className="flex items-center">
             <span className="mx-1 text-lg text-brand">{"> "}</span>
             {index === breadcrumbs.length - 1 ? (
-              <span className="text-base">{crumb.label}</span>
+              <span className="text-base text-brand">{crumb.label}</span>
             ) : (
               <Link
                 href={crumb.href}
-                className="hover:underline text-brand"
+                className="hover:underline "
               >
                 {crumb.label}
               </Link>

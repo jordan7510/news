@@ -12,19 +12,25 @@ export async function GET(
     try {
         await dbConnect();
         const { category, slug } = await params;
-        const searchCategory = new RegExp(`^${category}$`, "i")
-        const searchSlug = new RegExp(`^${slug}$`, "i")
-        const categoryDoc = await CategoryModel.findOne({ slug: searchCategory })
+        const categoryRegex = new RegExp(`^${category}$`, "i")
+        const slugRegex = new RegExp(`^${slug}$`, "i")
+        const categoryDoc = await CategoryModel.findOne({ slug: categoryRegex })
 
         if (!categoryDoc) {
             return NextResponse.json({ message: "Category not found", success: false }, { status: 404 })
         }
 
-        const res = await PostModel.findOne({
-            slug: searchSlug
-        }).populate("category")
+        const post = await PostModel.findOne({
+            slug: slugRegex,
+            "category": categoryDoc._id,
+            status: "ACTIVE"
+        }).populate("category");
 
-        return NextResponse.json({ data: res, message: "Fetch successfully", success: true })
+        if (!post) {
+            return NextResponse.json({ message: "Post not found.",success:false }, { status: 404 })
+        }
+
+        return NextResponse.json({ data: post, message: "Fetch successfully", success: true })
     } catch (error) {
         console.error(error)
         return NextResponse.json(

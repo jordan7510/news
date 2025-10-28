@@ -1,3 +1,4 @@
+import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
 import CategoryModel from "@/models/CategoryModel";
 import PostModel from "@/models/PostModel";
@@ -9,18 +10,17 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, { params }: { params: Promise<{ category: string }> }) {
 
     try {
-        const cached = await getCache("[category]")
+        const { category } = await params;
+        const categorySlug = new RegExp(`^${category}$`, "i")
+        const cacheKey = generateCacheKey(req.url)
+        const cached = await getCache(cacheKey)
         if (cached) {
-            const count = cached.length;
-            return NextResponse.json({ data: cached, message: "Fetch successfully", success: true, count: count })
+            return NextResponse.json({ data: cached, message: "Fetch successfully", success: true }, { status: 200 })
         }
         await dbConnect();
         const language = req.nextUrl.searchParams.get("language");
         const limit = parseInt(req.nextUrl.searchParams.get("limit") as string || "5", 10);
         const offset = parseInt(req.nextUrl.searchParams.get("offset") as string || "5", 10);
-        const { category } = await params;
-        const categorySlug = new RegExp(`^${category}$`, "i")
-
         const categoryDoc = await CategoryModel.findOne({ slug: categorySlug })
 
         if (!categoryDoc) {
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ cate
             .skip(offset)
             .populate("category")
         const count = res.length;
-        await setCache("[category]", res, 3600)
+        await setCache(cacheKey, res, 3600)
         return NextResponse.json({ data: res, message: "Fetch successfully", success: true, count: count })
     } catch (error) {
         return NextResponse.json(

@@ -1,3 +1,4 @@
+import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
 import CategoryModel from "@/models/CategoryModel";
 import PostModel from "@/models/PostModel";
@@ -12,14 +13,15 @@ export async function GET(
 ) {
 
     try {
-        const cached = await getCache("[slug]")
-        if (cached) {
-            return NextResponse.json({ data: cached, message: "Fetch successfully", success: true })
-        }
-        await dbConnect();
         const { category, slug } = await params;
         const categoryRegex = new RegExp(`^${category}$`, "i")
         const slugRegex = new RegExp(`^${slug}$`, "i")
+        const cacheKey = generateCacheKey(req.url)
+        const cached = await getCache(cacheKey)
+        if (cached) {
+            return NextResponse.json({ data: cached, message: "Fetch successfully", success: true }, { status: 200 })
+        }
+        await dbConnect();
         const categoryDoc = await CategoryModel.findOne({ slug: categoryRegex })
 
         if (!categoryDoc) {
@@ -35,7 +37,7 @@ export async function GET(
         if (!post) {
             return NextResponse.json({ message: "Post not found.", success: false }, { status: 404 })
         }
-        await setCache("[slug]", post, 3600)
+        await setCache(cacheKey, post, 3600)
         return NextResponse.json({ data: post, message: "Fetch successfully", success: true })
     } catch (error) {
         console.error(error)

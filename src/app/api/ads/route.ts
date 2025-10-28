@@ -1,11 +1,20 @@
+import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
 import AdModel from "@/models/AdsModel";
+import { getCache } from "@/utils/getCache";
+import { setCache } from "@/utils/setCache";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
+        const cacheKey = generateCacheKey(req.url)
+        const cached = await getCache(cacheKey)
+        if (cached) {
+            return NextResponse.json({ data: cached, message: "fetch succesfully", success: true }, { status: 200 })
+        }
         await dbConnect();
         const allAds = await AdModel.find();
+        await setCache(cacheKey, allAds, 3600)
         return NextResponse.json({ data: allAds }, { status: 200 })
     } catch (error) {
         console.log("error", error);
@@ -30,7 +39,7 @@ export async function POST(req: Request) {
         let insertedAds;
 
         if (Array.isArray(body)) {
-            if (body.length === 0)return NextResponse.json({ message: "Array is empty" }, { status: 400 });
+            if (body.length === 0) return NextResponse.json({ message: "Array is empty" }, { status: 400 });
 
             insertedAds = await AdModel.insertMany(body); // bulk insert
         } else {

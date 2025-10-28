@@ -3,15 +3,16 @@ import dbConnect from "@/lib/dbConnect";
 import PostModel from "@/models/PostModel";
 import { getCache } from "@/utils/getCache";
 import { setCache } from "@/utils/setCache";
+import { generateCacheKey } from "@/helpers/generateCacheKey";
 
 
 export async function GET(req: NextRequest) {
     try {
-        // const cached = await getCache("special-posts")
-        // if(cached){
-        //     const count = cached.length;
-        //     return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
-        // }
+        const cacheKey = generateCacheKey(req.url)
+        const cached = await getCache(cacheKey)
+        if (cached) {
+            return NextResponse.json({ data: cached, message: "fetch succesfully", success: true }, { status: 200 })
+        }
         await dbConnect()
         const url = req.nextUrl;
         const searchParams = url.searchParams;
@@ -36,19 +37,19 @@ export async function GET(req: NextRequest) {
         //     { $skip: 0 }
         // ]);
         const res = await PostModel.find({
-            language:language,
-            status:"ACTIVE"
+            language: language,
+            status: "ACTIVE"
         })
             .populate("category")
             .sort({ publishedTime: -1 })
             .limit(limit)
             .skip(offset)
+        await setCache(cacheKey, res, 3600)
         const count = res.length
-        // await setCache("special-posts",res,3600)
         return NextResponse.json({ data: res, message: "Fetched successfully", success: true, count: count }, { status: 200 })
     } catch (error) {
         console.error("error getting special posts", error)
-        return NextResponse.json({success:false, message:"Error getting special posts."},{status:500})
+        return NextResponse.json({ success: false, message: "Error getting special posts." }, { status: 500 })
     }
 }
 

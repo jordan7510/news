@@ -4,21 +4,23 @@ import BreakingNewsModel from "@/models/BreakingNewsModel";
 import { FilterQuery } from "mongoose";
 import { getCache } from "@/utils/getCache";
 import { setCache } from "@/utils/setCache";
+import { generateCacheKey } from "@/helpers/generateCacheKey";
 
-export async function GET(req:NextRequest){
+export async function GET(req: NextRequest) {
     try {
-        const cached = await getCache("breaking-news")
-        if(cached){
-            return NextResponse.json({ data: cached, message: "Fetched successfully", success: true}, { status: 200 })
+        const cacheKey = generateCacheKey(req.url)
+        const cached = await getCache(cacheKey)
+        if (cached) {
+            return NextResponse.json({ data: cached, message: "Fetch success", success: true }, { status: 200 })
         }
         await dbConnect();
         // const {searchParams} = new URL(req.url);
         const language = req.nextUrl.searchParams.get("language")
-        const query:FilterQuery<typeof BreakingNewsModel> ={};
-        if(language) query.language = language;
-        const allBreakingNews = await BreakingNewsModel.find(query).sort({publishedTime:-1});
-        if(allBreakingNews.length > 0){
-            await setCache("special-posts",allBreakingNews,3600)
+        const query: FilterQuery<typeof BreakingNewsModel> = {};
+        if (language) query.language = language;
+        const allBreakingNews = await BreakingNewsModel.find(query).sort({ publishedTime: -1 });
+        if (allBreakingNews.length > 0) {
+            await setCache(cacheKey, allBreakingNews, 3600)
             return NextResponse.json({ data: allBreakingNews }, { status: 200 })
         }
         return []
@@ -29,7 +31,7 @@ export async function GET(req:NextRequest){
             error: error instanceof Error ? error.message : "Unknow error",
             status: false,
         },
-        { status: 500 }
+            { status: 500 }
         )
     }
 }
@@ -44,7 +46,7 @@ export async function POST(req: Request) {
         let insertedBreakingNews;
 
         if (Array.isArray(body)) {
-            if (body.length === 0)return NextResponse.json({ message: "Array is empty" }, { status: 400 });
+            if (body.length === 0) return NextResponse.json({ message: "Array is empty" }, { status: 400 });
 
             insertedBreakingNews = await BreakingNewsModel.insertMany(body); // bulk insert
         } else {

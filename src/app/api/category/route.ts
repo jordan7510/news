@@ -1,20 +1,22 @@
+import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
 import CategoryModel from "@/models/CategoryModel";
 import { getCache } from "@/utils/getCache";
 import { setCache } from "@/utils/setCache";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
 
     try {
-        const cached = await getCache("category")
+        const cacheKey = generateCacheKey(req.url)
+        const cached = await getCache(cacheKey)
         if (cached) {
-            return NextResponse.json({ data: cached, message: "Fetched successfully", success: true }, { status: 200 })
+            return NextResponse.json({ data: cached, message: "Fetch success", success: true }, { status: 200 })
         }
         dbConnect();
         const allCategory = await CategoryModel.find();
         if (allCategory.length > 0) {
-            await setCache("category", allCategory, 3600)
+            await setCache(cacheKey, allCategory, 3600)
             return NextResponse.json({ data: allCategory, success: true, message: "Fetch success" }, { status: 200 })
         }
         return []

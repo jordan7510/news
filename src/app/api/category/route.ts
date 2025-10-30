@@ -19,7 +19,7 @@ export async function GET(req: Request) {
             await setCache(cacheKey, allCategory, 3600)
             return NextResponse.json({ data: allCategory, success: true, message: "Fetch success" }, { status: 200 })
         }
-        return []
+        return NextResponse.json({ data: [], success: false, message: "Fetch error" }, { status: 404 })
     } catch (error) {
         console.log("error", error);
         return NextResponse.json(

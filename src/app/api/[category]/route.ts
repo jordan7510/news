@@ -7,7 +7,7 @@ import { setCache } from "@/utils/setCache";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ category: string }> }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ category: string }> }){
 
     try {
         const { category } = await params;

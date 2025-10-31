@@ -1,15 +1,16 @@
 import { createClient, RedisClientType } from "redis";
 
+
 let redisClient: RedisClientType | null = null
 
 export async function getRedisClient(): Promise<RedisClientType> {
   if (redisClient) return redisClient;
   redisClient = createClient({
-    username: 'default',
-    password: '2ElxYMM7pMTQJrBimoVxpv1oeBmApxma',
+    username: process.env.REDIS_USERNAME,
+    password: process.env.REDIS_PASSWORD,
     socket: {
-      host: 'redis-13221.crce182.ap-south-1-1.ec2.redns.redis-cloud.com',
-      port: 13221,
+      host: process.env.REDIS_HOST,
+      port: parseInt(process.env.REDIS_PORT!,10),
     },
   })
 

@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
             await setCache(cacheKey, allBreakingNews, 3600)
             return NextResponse.json({ data: allBreakingNews }, { status: 200 })
         }
-        return []
+        return NextResponse.json({ data: [],message:"no breaking news found.",success:false }, { status: 404 })
     } catch (error) {
         console.log("error", error);
         return NextResponse.json({

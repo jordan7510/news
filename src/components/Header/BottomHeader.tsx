@@ -9,7 +9,6 @@ import { BsFillHouseDoorFill } from "react-icons/bs";
 export default function BottomHeader() {
   const [activePath, setActivePath] = useState("")
   const categories = useCategory()
-  const categoriesNames = categories.slice(7, 19)
   const { lang } = useLanguage()
   const path = usePathname()
 

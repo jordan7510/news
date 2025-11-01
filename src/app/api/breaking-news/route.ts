@@ -21,9 +21,9 @@ export async function GET(req: NextRequest) {
         const allBreakingNews = await BreakingNewsModel.find(query).sort({ publishedTime: -1 });
         if (allBreakingNews.length > 0) {
             await setCache(cacheKey, allBreakingNews, 3600)
-            return NextResponse.json({ data: allBreakingNews }, { status: 200 })
+            return NextResponse.json({ data: allBreakingNews, message: "Fetch success.", success: true }, { status: 200 })
         }
-        return NextResponse.json({ data: [],message:"no breaking news found.",success:false }, { status: 404 })
+        return NextResponse.json({ data: [], message: "Fetch error.", success: false }, { status: 404 })
     } catch (error) {
         console.log("error", error);
         return NextResponse.json({

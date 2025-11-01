@@ -28,8 +28,13 @@ export default function CategoryPage() {
     async function fetchPosts(): Promise<Post[]> {
       try {
         const res = await fetch(`/api/${topic}/?language=${lang}&limit=${limit}&offset=${offset}`)
+        
         const data = await res.json()
-        const posts: Post[] = data?.data
+        
+        console.log("category post res",data);
+        const posts: Post[] = data
+        console.log("category posts",posts);
+        
         if (posts.length > 0) {
           setPosts(posts)
         }

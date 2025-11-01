@@ -40,7 +40,9 @@ export async function GET(req: NextRequest, {params}:{params:Promise<{category:s
       .limit(limit)
       .skip(offset)
       .populate("category");
-
+  
+    console.log("category posts",posts);
+    
     const count = posts.length;
 
     // Cache result

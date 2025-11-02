@@ -10,5 +10,6 @@ export async function GET() {
         return NextResponse.json(data)
     } catch (error) {
         console.error("error fetching category", error)
+        return NextResponse.json({message:"error fetching live tv", success:false}, {status:500})
     }    
 }

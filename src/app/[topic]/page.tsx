@@ -25,20 +25,17 @@ export default function CategoryPage() {
   }, [ads]);
 
   useEffect(() => {
-    async function fetchPosts(): Promise<Post[]> {
+    async function fetchPosts() {
       try {
         const res = await fetch(`/api/${topic}/?language=${lang}&limit=${limit}&offset=${offset}`)
-        
+         console.log("res", res);
         const data = await res.json()
-        
-        console.log("category post res",data);
-        const posts: Post[] = data
-        console.log("category posts",posts);
-        
-        if (posts.length > 0) {
-          setPosts(posts)
+         console.log("data", data);
+        // const resultPosts: Post[] = data?.data
+        // console.log("resultPosts", resultPosts);
+        if (data.length > 1) {
+          setPosts(data)
         }
-        return posts
       } catch (error) {
         console.error("error fething post", error)
         return []
@@ -47,7 +44,8 @@ export default function CategoryPage() {
     fetchPosts()
   }, [lang, topic])
 
-  console.log("posts", posts);
+         console.log("posts", posts);
+ 
 
 
 
@@ -105,8 +103,6 @@ export default function CategoryPage() {
           </div>
 
         </div>
-
-
 
 
         <div className='col-span-3 pt-4'>

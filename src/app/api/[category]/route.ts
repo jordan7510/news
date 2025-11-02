@@ -1,4 +1,3 @@
-// import { generateCacheKey } from "@/helpers/generateCacheKey";
 import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
 import CategoryModel from "@/models/CategoryModel";
@@ -17,7 +16,6 @@ export async function GET(req: NextRequest, {params}:{params:Promise<{category:s
     // //  Check cache first
     const cached = await getCache(cacheKey);
     if (cached) {
-      console.log("category cache hit");
       return NextResponse.json(cached);
     }
 
@@ -32,7 +30,6 @@ export async function GET(req: NextRequest, {params}:{params:Promise<{category:s
         { status: 404 }
       );
     }
-
     const posts:Post[] = await PostModel.find({
       language,
       category: categoryDoc._id,
@@ -40,9 +37,6 @@ export async function GET(req: NextRequest, {params}:{params:Promise<{category:s
       .limit(limit)
       .skip(offset)
       .populate("category");
-  
-    console.log("category posts",posts);
-    
     const count = posts.length;
 
     // Cache result

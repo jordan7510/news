@@ -35,20 +35,32 @@ async function startRedisConnection() {
   }
 }
 
-export async function getRedisClient():Promise<RedisClientType> {
-  if(!redisClient){
+export async function getRedisClient(): Promise<RedisClientType> {
+  if (!redisClient) {
     throw new Error("Redis client not started.")
   }
   return redisClient
 }
 
-(async()=>{
+(async () => {
   try {
     await startRedisConnection()
   } catch (error) {
-      console.error("Redis start error.", error)
+    console.error("Redis start error.", error)
   }
 })()
 
 
 
+export async function getCache(key: string): Promise<any> {
+
+  try {
+    const redis = await getRedisClient();
+    const cache = await redis.get(key)
+    return cache ? JSON.parse(cache) : null
+  } catch {
+    console.error(`Failed to get cache for key: ${key}`);
+    return null
+  }
+
+}

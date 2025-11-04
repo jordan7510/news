@@ -1,18 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import PostModel from "@/models/PostModel";
-import { getCache } from "@/utils/getCache";
-import { setCache } from "@/utils/setCache";
+
 import { generateCacheKey } from "@/helpers/generateCacheKey";
+import { getCache, setCache } from "@/lib/redisClient";
 
 
 export async function GET(req: NextRequest) {
     try {
         const cacheKey = generateCacheKey(req.url)
+        console.log("cacheKey",cacheKey);
         const cached = await getCache(cacheKey)
         if (cached) {
-            return NextResponse.json({ data: cached, message: "fetch succesfully", success: true }, { status: 200 })
+            console.log("cached hit");
+            const count = cached.length
+            return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
         }
+        console.log("Cached not available,Fetching form DB");
         await dbConnect()
         const url = req.nextUrl;
         const searchParams = url.searchParams;

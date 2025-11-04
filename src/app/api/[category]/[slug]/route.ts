@@ -1,9 +1,9 @@
 import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
+import { getCache, setCache } from "@/lib/redisClient";
 import CategoryModel from "@/models/CategoryModel";
 import PostModel from "@/models/PostModel";
-import { getCache } from "@/utils/getCache";
-import { setCache } from "@/utils/setCache";
+
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -17,10 +17,17 @@ export async function GET(
         const categoryRegex = new RegExp(`^${category}$`, "i")
         const slugRegex = new RegExp(`^${slug}$`, "i")
         const cacheKey = generateCacheKey(req.url)
+        console.log("cacheKey", cacheKey);
+
         const cached = await getCache(cacheKey)
         if (cached) {
-            return NextResponse.json({ data: cached, message: "Fetch successfully", success: true }, { status: 200 })
+            console.log("cached hit");
+            return NextResponse.json(
+                { data: cached, message: "Fetch successfully", success: true },
+                { status: 200 }
+            );
         }
+        console.log("Cached not available,Fetching form DB");
         await dbConnect();
         const categoryDoc = await CategoryModel.findOne({ slug: categoryRegex })
 

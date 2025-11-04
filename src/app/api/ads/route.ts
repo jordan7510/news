@@ -1,17 +1,20 @@
 import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
+import { getCache, setCache } from "@/lib/redisClient";
 import AdModel from "@/models/AdsModel";
-import { getCache } from "@/utils/getCache";
-import { setCache } from "@/utils/setCache";
+
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
     try {
         const cacheKey = generateCacheKey(req.url)
+        console.log("cacheKey",cacheKey)
         const cached = await getCache(cacheKey)
         if (cached) {
+            console.log("cached hit");
             return NextResponse.json({ data: cached, message: "fetch succesfully", success: true }, { status: 200 })
         }
+        console.log("Cached not available,Fetching form DB");
         await dbConnect();
         const allAds = await AdModel.find();
         await setCache(cacheKey, allAds, 3600)

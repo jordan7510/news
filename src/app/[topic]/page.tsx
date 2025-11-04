@@ -33,21 +33,20 @@ export default function CategoryPage() {
          console.log("data", data);
         // const resultPosts: Post[] = data?.data
         // console.log("resultPosts", resultPosts);
-        if (data.length > 1) {
-          setPosts(data)
+        if (data?.data?.length > 0) {
+          setPosts(data.data)
+        }else{
+          setPosts([])
         }
       } catch (error) {
         console.error("error fething post", error)
-        return []
+         setPosts([])
       }
     }
     fetchPosts()
   }, [lang, topic])
 
          console.log("posts", posts);
- 
-
-
 
   return (
     <section>

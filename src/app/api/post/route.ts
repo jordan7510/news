@@ -1,8 +1,8 @@
 import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
+import { getCache, setCache } from "@/lib/redisClient";
 import PostModel from "@/models/PostModel";
-import { getCache } from "@/utils/getCache";
-import { setCache } from "@/utils/setCache";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: Request) {

@@ -2,17 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import BreakingNewsModel from "@/models/BreakingNewsModel";
 import { FilterQuery } from "mongoose";
-import { getCache } from "@/utils/getCache";
-import { setCache } from "@/utils/setCache";
+
 import { generateCacheKey } from "@/helpers/generateCacheKey";
+import { getCache, setCache } from "@/lib/redisClient";
 
 export async function GET(req: NextRequest) {
     try {
         const cacheKey = generateCacheKey(req.url)
+        console.log("cacheKey",cacheKey);
         const cached = await getCache(cacheKey)
         if (cached) {
+            console.log("cached hit");
             return NextResponse.json({ data: cached, message: "Fetch success", success: true }, { status: 200 })
         }
+        console.log("Cached not available,Fetching form DB");
         await dbConnect();
         // const {searchParams} = new URL(req.url);
         const language = req.nextUrl.searchParams.get("language")

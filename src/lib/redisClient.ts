@@ -1,3 +1,4 @@
+import { Post } from "@/utils/Types"
 import { createClient, RedisClientType } from "redis"
 
 let redisClient: RedisClientType | null = null
@@ -26,8 +27,7 @@ async function startRedisConnection() {
       redisClient.on("error", (err) => {
         console.log("Redis connection error", err)
       })
-      await redisClient.connect();
-
+      await redisClient.connect()
     } catch (error) {
       console.error("Redis connection failed", error);
       throw new Error("Redis connection failed.")
@@ -52,8 +52,7 @@ export async function getRedisClient(): Promise<RedisClientType> {
 
 
 
-export async function getCache(key: string): Promise<any> {
-
+export async function getCache(key: string) {
   try {
     const redis = await getRedisClient();
     const cache = await redis.get(key)
@@ -61,6 +60,15 @@ export async function getCache(key: string): Promise<any> {
   } catch {
     console.error(`Failed to get cache for key: ${key}`);
     return null
+  }
+}
+
+export async function setCache(key: string, value: Post[], ttlInSeconds: number) {
+  const redis = await getRedisClient();
+  if (ttlInSeconds) {
+    await redis.set(key, JSON.stringify(value), { "EX": ttlInSeconds })
+  } else {
+    await redis.set(key, JSON.stringify(value))
   }
 
 }

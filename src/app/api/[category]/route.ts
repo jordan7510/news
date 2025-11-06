@@ -1,31 +1,27 @@
 import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
-import { getCache, setCache } from "@/lib/redisClient";
+import isRedisEnabled, { getCache, setCache } from "@/lib/redisClient";
 import CategoryModel from "@/models/CategoryModel";
 import PostModel from "@/models/PostModel";
 import { Post } from "@/utils/Types";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, {params}:{params:Promise<{category:string}>}) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ category: string }> }) {
   try {
     const { category } = await params;
     const categorySlug = new RegExp(`^${category}$`, "i");
     const cacheKey = generateCacheKey(req.url);
-    console.log("cacheKey",cacheKey);
     
-
-    // //  Check cache first
-    const cached = await getCache(cacheKey);
-    if (cached) {
-      console.log("cached hit");
-      const count = cached.length;
-      return NextResponse.json(
-      { data: cached, message: "Fetch successfully", success: true, count },
-      { status: 200 }
-    );
+    if (isRedisEnabled()) {
+      const cached = await getCache(cacheKey)
+      if (cached) {
+        console.log("cached hit");
+        const count = cached.length
+        return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
+      }
     }
     console.log("Cached not available,Fetching form DB");
-    
+
     await dbConnect();
     const language = req.nextUrl.searchParams.get("language");
     const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "5", 10);
@@ -37,7 +33,7 @@ export async function GET(req: NextRequest, {params}:{params:Promise<{category:s
         { status: 404 }
       );
     }
-    const posts:Post[] = await PostModel.find({
+    const posts: Post[] = await PostModel.find({
       language,
       category: categoryDoc._id,
     })

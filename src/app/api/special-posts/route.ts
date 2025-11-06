@@ -3,18 +3,19 @@ import dbConnect from "@/lib/dbConnect";
 import PostModel from "@/models/PostModel";
 
 import { generateCacheKey } from "@/helpers/generateCacheKey";
-import { getCache, setCache } from "@/lib/redisClient";
+import isRedisEnabled, { getCache, setCache } from "@/lib/redisClient";
 
 
 export async function GET(req: NextRequest) {
     try {
         const cacheKey = generateCacheKey(req.url)
-        console.log("cacheKey",cacheKey);
-        const cached = await getCache(cacheKey)
-        if (cached) {
-            console.log("cached hit");
-            const count = cached.length
-            return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
+        if (isRedisEnabled()) {
+            const cached = await getCache(cacheKey)
+            if (cached) {
+                console.log("cached hit");
+                const count = cached.length
+                return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
+            }
         }
         console.log("Cached not available,Fetching form DB");
         await dbConnect()
@@ -27,7 +28,7 @@ export async function GET(req: NextRequest) {
         // const sortField = searchParams.get("sortField") || "publishedTime"; // default sorting field, OPTIONAL
         // const sortOrder = searchParams.get("sortOrder") === "asc" ? 1 : -1; // asc = 1, desc = -1, OPTIONAL
         // const res = await PostModel.aggregate([
-        //     { $match: { isActive: true } },
+        //     { $match: { status: "ACTIVE", language: language } },
         //     {
         //         $lookup: {
         //             from: "categories",
@@ -37,17 +38,19 @@ export async function GET(req: NextRequest) {
         //         }
         //     },
         //     { $sort: { publishedTime: -1 } },
-        //     { $limit: 10 },
-        //     { $skip: 0 }
+        //     { $limit: limit },
+        //     { $skip: offset }
         // ]);
+
         const res = await PostModel.find({
             language: language,
             status: "ACTIVE"
         })
-            .populate("category")
-            .sort({ publishedTime: -1 })
-            .limit(limit)
-            .skip(offset)
+        .limit(limit)
+        .populate("category")
+        .sort({ publishedTime: -1 })
+        .skip(offset)
+
         await setCache(cacheKey, res, 3600)
         const count = res.length
         return NextResponse.json({ data: res, message: "Fetched successfully", success: true, count: count }, { status: 200 })

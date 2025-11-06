@@ -1,6 +1,6 @@
 import { generateCacheKey } from "@/helpers/generateCacheKey";
 import dbConnect from "@/lib/dbConnect";
-import { getCache, setCache } from "@/lib/redisClient";
+import isRedisEnabled, { getCache, setCache } from "@/lib/redisClient";
 import PostModel from "@/models/PostModel";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -39,10 +39,16 @@ export async function POST(req: Request) {
 export async function GET(req: NextRequest) {
     try {
         const cacheKey = generateCacheKey(req.url)
-        const cached = await getCache(cacheKey)
-        if (cached) {
-            return NextResponse.json({ data: cached, message: "fetch succesfully", success: true }, { status: 200 })
+        
+        if (isRedisEnabled()) {
+            const cached = await getCache(cacheKey)
+            if (cached) {
+                console.log("cached hit");
+                const count = cached.length
+                return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
+            }
         }
+
         await dbConnect()
         const url = req.nextUrl;
         const searchParams = url.searchParams;

@@ -4,16 +4,18 @@ import BreakingNewsModel from "@/models/BreakingNewsModel";
 import { FilterQuery } from "mongoose";
 
 import { generateCacheKey } from "@/helpers/generateCacheKey";
-import { getCache, setCache } from "@/lib/redisClient";
+import isRedisEnabled, { getCache, setCache } from "@/lib/redisClient";
 
 export async function GET(req: NextRequest) {
     try {
         const cacheKey = generateCacheKey(req.url)
-        console.log("cacheKey",cacheKey);
-        const cached = await getCache(cacheKey)
-        if (cached) {
-            console.log("cached hit");
-            return NextResponse.json({ data: cached, message: "Fetch success", success: true }, { status: 200 })
+        if (isRedisEnabled()) {
+            const cached = await getCache(cacheKey)
+            if (cached) {
+                console.log("cached hit");
+                const count = cached.length
+                return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
+            }
         }
         console.log("Cached not available,Fetching form DB");
         await dbConnect();

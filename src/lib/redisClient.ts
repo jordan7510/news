@@ -16,7 +16,16 @@ const redisConfig = {
   lazyConnect: true,
 }
 
+export default function isRedisEnabled(){
+ if(process.env.USE_REDIS_CACHE === "false") return false
+ return true
+}
+
 async function startRedisConnection() {
+  if (!isRedisEnabled()) {
+    console.log("Redis cache disabled")
+    return null
+  }
   if (!redisClient) {
     try {
       redisClient = createClient(redisConfig)
@@ -35,9 +44,10 @@ async function startRedisConnection() {
   }
 }
 
-export async function getRedisClient(): Promise<RedisClientType> {
+export async function getRedisClient(): Promise<RedisClientType | null> {
+  if(!isRedisEnabled()) return null
   if (!redisClient) {
-    throw new Error("Redis client not started.")
+    await startRedisConnection()
   }
   return redisClient
 }
@@ -53,8 +63,10 @@ export async function getRedisClient(): Promise<RedisClientType> {
 
 
 export async function getCache(key: string) {
+   if(!isRedisEnabled()) return null
   try {
     const redis = await getRedisClient();
+    if(!redis) return null
     const cache = await redis.get(key)
     return cache ? JSON.parse(cache) : null
   } catch {
@@ -64,7 +76,9 @@ export async function getCache(key: string) {
 }
 
 export async function setCache(key: string, value: Post[], ttlInSeconds: number) {
+  if(!isRedisEnabled()) return null
   const redis = await getRedisClient();
+  if(!redis) return null
   if (ttlInSeconds) {
     await redis.set(key, JSON.stringify(value), { "EX": ttlInSeconds })
   } else {

@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 const TopHeader = dynamic(() => import("./TopHeader"), { ssr: false })
@@ -7,43 +7,40 @@ const MiddleHeader = dynamic(() => import("./MiddleHeader"), { ssr: false })
 const BottomHeader = dynamic(() => import("./BottomHeader"), { ssr: false })
 
 export default function Header() {
-    const [showMiddle, setShowMiddle] = useState(true)
-    const [lastScrollY, setLastScrollY] = useState(0)
+    // const [scrollPosition, setScrollPosition] = useState(0)
+    // const [showMiddle, setShowMiddle] = useState(true)
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const currentScroll = window.scrollY;
-            if (currentScroll > lastScrollY && currentScroll >= 170) {
-                setShowMiddle(false)
-                setLastScrollY(currentScroll)
-            } else if (currentScroll < 30) {
-                setShowMiddle(true)
-                setLastScrollY(0)
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                })
-            }
-            setLastScrollY(currentScroll)
-        }
-        window.addEventListener("scroll", handleScroll)
-        return () => window.removeEventListener("scroll", handleScroll)
-    })
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         const currentScroll = window.scrollY;
+    //         if (currentScroll > scrollPosition && currentScroll > 50) {
+    //             setShowMiddle(false)
+    //         } else {
+    //             setShowMiddle(true)
+    //         }
+    //         setScrollPosition(currentScroll)
+    //     }
+    //     window.addEventListener("scroll", handleScroll)
+    //     return () => window.removeEventListener("scroll", handleScroll)
+
+    // }, [scrollPosition])
+
+
+
 
 
     return (
         <div className='sticky top-0 z-50 bg-white dark:bg-black'>
             <TopHeader />
-            <div
-                className={`hidden md:block overflow-hidden transition-all duration-500 ease-in-out ${showMiddle ? "h-36 " : "h-0"}`}
-            >
+            {/* <div className={`${showMiddle ? "" : ""}`}>
                 <div
                     className={`transition-transform duration-500 ease-in-out ${showMiddle ? "translate-y-0" : "-translate-y-[400px]"
                         }`}
                 >
-                    <MiddleHeader />
                 </div>
-            </div>
+            </div> */}
+                    <MiddleHeader />
+
             <BottomHeader />
         </div>
     )

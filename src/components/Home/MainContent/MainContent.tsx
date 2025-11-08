@@ -37,11 +37,11 @@ export default function MainContent() {
     }, [lang])
     return (
         <section className='grid grid-cols-1 md:grid-cols-12 gap-x-1 border-b dark:border-white my-2'>
-            <div className="col-span-4 border-r p-1 grid grid-rows-2">
+            <div className="col-span-4 border-r p-1 h-full grid grid-rows-2">
                 {
                     topPriporityPosts.slice(0, 2).map((post) => {
                         return (
-                            <Link className="h-full" href={`/${post.category[0].slug}/${post.slug}`} key={post.uid}>
+                            <Link className="h-full flex flex-1" href={`/${post.category[0].slug}/${post.slug}`} key={post.uid}>
                                 <NewsBigCard post={post} />
                             </Link>
                         )

@@ -10,9 +10,6 @@ import Link from "next/link";
 export default function MiddleHeader() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { theme } = useTheme()
-  const [scrollPosition, setScrollPosition] = useState(0)
-  const [showMiddle, setShowMiddle] = useState(true)
-
   const ads = useContext(AdsContext)
 
   const desktopAds = useMemo(() => {
@@ -29,23 +26,8 @@ export default function MiddleHeader() {
     return () => clearInterval(interval)
   }, [desktopAds])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      if (currentScroll > scrollPosition && currentScroll > 50) {
-        setShowMiddle(false)
-      } else {
-        setShowMiddle(true)
-      }
-      setScrollPosition(currentScroll)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-
-  }, [scrollPosition])
-
   return (
-    <div className={`hidden md:flex items-center justify-between py-2 ${showMiddle ? "translate-y-0" : "-translate-y-[400px]"}`}>
+    <div className={`hidden md:flex items-center justify-between py-2 `}>
       <div className="">
         <Link href={"/"}>
           <Image
@@ -57,7 +39,7 @@ export default function MiddleHeader() {
           />
         </Link>
       </div>
-      <div className={`relative w-full ${showMiddle ? "h-32" : "h-0"} flex items-center justify-center overflow-hidden`}>
+      <div className={`relative w-full h-full flex items-center justify-center overflow-hidden`}>
         {
           desktopAds?.length > 0 && (
             <Image

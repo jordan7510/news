@@ -13,16 +13,23 @@ export default function Header() {
     useEffect(() => {
         const handleScroll = () => {
             const currentScroll = window.scrollY;
-            if (currentScroll > 150 && currentScroll > scrollPosition) {
+            if (currentScroll > 200 && currentScroll > scrollPosition) {
                 setShowMiddle(false)
-            } else if(currentScroll < 100 && currentScroll < scrollPosition){
+            } else if(currentScroll < 140 && currentScroll < scrollPosition){
                 setShowMiddle(true)
+                window.scrollTo({
+                    top:0,
+                    behavior:"smooth"
+                })
+            }
+            if(currentScroll === 0){
+                
             }
             setScrollPosition(currentScroll)
         }
         window.addEventListener("scroll", handleScroll)
         return () => window.removeEventListener("scroll", handleScroll)
-    })
+    },[scrollPosition])
 
     console.log("scrollPosition", scrollPosition);
     console.log("showMiddle", showMiddle);
@@ -32,7 +39,7 @@ export default function Header() {
     return (
         <div className='sticky top-0 z-50 bg-white dark:bg-black'>
             <TopHeader />
-            <div className={`transition-all overflow-hidden duration-150 ${showMiddle ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}`}>
+            <div className={`transition-all ease-in-out overflow-hidden duration-300 ${showMiddle ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}`}>
                 <MiddleHeader />
             </div>
             <BottomHeader />

@@ -21,13 +21,12 @@ export async function GET(
         if (isRedisEnabled()) {
             const cached = await getCache(cacheKey)
             if (cached) {
-                console.log("cached hit");
                 const count = cached.length
                 return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
             }
         }
         
-        console.log("Cached not available,Fetching form DB");
+        
         await dbConnect();
         const categoryDoc = await CategoryModel.findOne({ slug: categoryRegex })
 

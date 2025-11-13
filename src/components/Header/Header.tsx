@@ -31,10 +31,6 @@ export default function Header() {
         return () => window.removeEventListener("scroll", handleScroll)
     },[scrollPosition])
 
-    console.log("scrollPosition", scrollPosition);
-    console.log("showMiddle", showMiddle);
-
-
 
     return (
         <div className='sticky top-0 z-50 bg-white dark:bg-black'>

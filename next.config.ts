@@ -14,9 +14,9 @@ const nextConfig: NextConfig = {
     ],
   },
   output: "standalone",
-  compiler:{
-    removeConsole:true
-  }
+  // compiler:{
+  //   removeConsole:true
+  // }
 };
 
 export default nextConfig;

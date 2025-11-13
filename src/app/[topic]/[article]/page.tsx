@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import Breadcrumb from '@/components/BreadCrumbs/BreadCrumbs';
+import RelatedArticles from './components/RelatedArticles';
 
 export default function ArticleDetailPage() {
   const [post, setPost] = useState<Post | null>(null);
@@ -20,7 +21,7 @@ export default function ArticleDetailPage() {
   }, [ads]);
 
   useEffect(() => {
-    async function fetchPosts(){
+    async function fetchPosts() {
       try {
         const res = await fetch(`/api/${topic}/${article}`)
         const data = await res.json()
@@ -32,18 +33,18 @@ export default function ArticleDetailPage() {
       }
     }
     fetchPosts()
-  }, [ topic, article])
+  }, [topic, article])
 
   console.log("posts", post);
 
-  if(!post){
+  if (!post) {
     return <p className="text-center, py-2">Loading article</p>
   }
 
 
   return (
     <section>
-      <Breadcrumb/>
+      <Breadcrumb />
       <div className='grid grid-cols-12'>
         <div className='col-span-8'>
           <div className='space-y-3 px-2 py-4'>
@@ -81,11 +82,13 @@ export default function ArticleDetailPage() {
           <p className='text-center text-lg font-medium py-2'>Sponsored !</p>
           <div className='flex flex-col items-center justify-center gap-6'>
             {
-              sideAds.slice(0, 3).map((ad,i) => <SideSquareAds key={i} ad={ad} />)
+              sideAds.slice(0, 3).map((ad, i) => <SideSquareAds key={i} ad={ad} />)
             }
           </div>
         </div>
       </div>
+
+      <RelatedArticles/>
     </section>
   )
 }

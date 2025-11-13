@@ -43,7 +43,6 @@ export async function GET(req: NextRequest) {
         if (isRedisEnabled()) {
             const cached = await getCache(cacheKey)
             if (cached) {
-                console.log("cached hit");
                 const count = cached.length
                 return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
             }

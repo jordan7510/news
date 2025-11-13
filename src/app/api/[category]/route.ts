@@ -15,12 +15,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ cate
     if (isRedisEnabled()) {
       const cached = await getCache(cacheKey)
       if (cached) {
-        console.log("cached hit");
         const count = cached.length
         return NextResponse.json({ data: cached, message: "Fetched successfully", success: true, count: count }, { status: 200 })
       }
     }
-    console.log("Cached not available,Fetching form DB");
 
     await dbConnect();
     const language = req.nextUrl.searchParams.get("language");

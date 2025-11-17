@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
     ],
   },
   output: "standalone",
+  reactStrictMode: false,
   // compiler:{
   //   removeConsole:true
   // }

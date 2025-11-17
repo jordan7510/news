@@ -23,7 +23,7 @@ export default function MainContent() {
             try {
                 const res = await fetch(`/api/special-posts?language=${lang}`)
                 const data = await res.json()
-                console.log("data",data.data)
+                console.log("data",data)
                 if (data) {
                     setPosts(data.data)
                 }
@@ -51,7 +51,7 @@ export default function MainContent() {
             <div className="md:col-span-8 grid grid-cols-12 ">
                 <div className="col-span-12 md:col-span-8 grid grid-cols-2 md:grid-cols-2 gap-x-2 border-r p-1">
                     {
-                        posts.slice(0, 8).map((post) => {
+                        posts &&  posts.slice(0, 8).map((post) => {
                             return (
                                 <Link className="h-full" href={`/${post.category[0].slug}/${post.slug}`} key={post.uid}>
                                     <NewsSmallCard post={post} />

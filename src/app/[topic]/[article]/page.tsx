@@ -35,8 +35,6 @@ export default function ArticleDetailPage() {
     fetchPosts()
   }, [topic, article])
 
-  console.log("posts", post);
-
   if (!post) {
     return <p className="text-center, py-2">Loading article</p>
   }

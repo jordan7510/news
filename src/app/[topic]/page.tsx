@@ -10,6 +10,7 @@ import CategoryBigCard from './components/CategoryBigCard';
 import CategoryTrendingCard from './components/CategoryTrendingCard';
 import CategorySmallCard from './components/CategorySmallCard';
 import Link from 'next/link';
+import RelatedArticles from './components/RelatedArticles';
 
 export default function CategoryPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -113,6 +114,8 @@ export default function CategoryPage() {
           </div>
         </div>
       </div>
+
+      <RelatedArticles/>
     </section>
   )
 }

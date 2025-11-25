@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import Breadcrumb from '@/components/BreadCrumbs/BreadCrumbs';
-import RelatedArticles from './components/RelatedArticles';
+import RelatedArticles from '../components/RelatedArticles';
 
 export default function ArticleDetailPage() {
   const [post, setPost] = useState<Post | null>(null);

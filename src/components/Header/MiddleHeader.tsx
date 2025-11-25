@@ -44,9 +44,9 @@ export default function MiddleHeader() {
           desktopAds?.length > 0 && (
             <Image
               className="object-contain"
-              src={desktopAds[currentIndex].ad_image}
-              key={desktopAds[currentIndex].advetisement_name}
-              alt={`${desktopAds[currentIndex].brand_name}`}
+              src={desktopAds[currentIndex]?.ad_image}
+              key={desktopAds[currentIndex]?.advetisement_name}
+              alt={`${desktopAds[currentIndex]?.brand_name}`}
               fill
               priority
             />
